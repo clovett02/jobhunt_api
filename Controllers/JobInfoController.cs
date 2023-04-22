@@ -11,6 +11,7 @@ public class JobInfoController : ControllerBase
     {
         return "Hello";
     }
+    
     [HttpPost("/jobinfo")]
     public void Post([FromBody] JobRecord Job)
     {
