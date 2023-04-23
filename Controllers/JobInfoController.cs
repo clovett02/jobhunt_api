@@ -6,18 +6,70 @@ namespace JobHunt.Controller;
 [ApiController]
 public class JobInfoController : ControllerBase
 {
+    ///Connection String
+    string cs = @"
+            server=hulk.mysql;
+            userid=root;
+            password=mchs2009;
+            database=jobhunt
+        ";
+
     [HttpGet("/jobinfo")]
-    public string Get()
+    public void Get()
     {
-        return "Hello";
+        JobInfo[] ReturnAllJobs(MySqlConnection con)
+        {
+            string sql = "SELECT * FROM jobs";
+            using var cmd = new MySqlCommand(sql, con);
+            List<JobInfo> records = new List<JobInfo>();
+
+            using MySqlDataReader rdr = cmd.ExecuteReader();
+
+            int i = 0;
+            while(rdr.Read())
+            {
+                records.Add(new JobInfo());
+                records[i].CompanyName = rdr.GetString("CompanyName");
+                records[i].JobTitle = rdr.GetString("JobTitle");
+                records[i].JobDescription = rdr.GetString("JobDescription");
+                records[i].State = rdr.GetString("State");
+                records[i].City = rdr.GetString("City");
+                records[i].Remote = rdr.GetBoolean("Remote");
+                records[i].Hybrid = rdr.GetBoolean("Hybrid");
+                records[i].Onsite = rdr.GetBoolean("Onsite");
+                records[i].ApplicationDate = rdr.GetDateTime("ApplicationDate");
+                records[i].ApplicationTime = rdr.GetDateTime("ApplicationTime");
+                records[i].Responded = rdr.GetBoolean("Responded");
+                records[i].ResponseDate = rdr.GetDateTime("ResponseDate");
+                records[i].ResponseTime = rdr.GetDateTime("ResponseTime");
+
+                i++;
+            }
+            JobInfo[] result = records.ToArray();
+            return result;
+        }
+
+        using var con = new MySqlConnection(cs);
+        con.Open();
+
+        JobInfo[] jobs = ReturnAllJobs(con);
+
+        for (int i = 0; i < jobs.Length; i++)
+        {
+            Console.WriteLine($@"Job Title: {jobs[i].JobTitle}
+                Job Description: {jobs[i].JobDescription}
+                Remote: {jobs[i].Remote}
+                ApplicationDate: {jobs[i].ApplicationDate}
+                ApplicationTime: {jobs[i].ApplicationTime}");
+        }
     }
 
     [HttpPost("/jobinfo")]
-    public void Post([FromBody] JobRecord Job)
+    public void Post([FromBody] JobInfoRecord Job)
     {
         void InsertJobs(MySqlConnection con)
         {
-            var sql = @"INSERT INTO jobs(CompanyName, JobTitle, JobDescription, State, City, Remote, Hybrid, Onsite, 
+            string sql = @"INSERT INTO jobs(CompanyName, JobTitle, JobDescription, State, City, Remote, Hybrid, Onsite, 
             ApplicationDate, ApplicationTime, Responded, ResponseDate, ResponseTime) 
             
             VALUES(@CompanyName, @JobTitle, @JobDescription, @State, @City, @Remote, @Hybrid, @Onsite, 
@@ -44,15 +96,21 @@ public class JobInfoController : ControllerBase
         }
         void InsertSkills(MySqlConnection con)
         {
-            
-        }
+            string sql = $"INSERT IGNORE INTO skills(Name) VALUES(@Name{0})";
+            for (int i = 1; i < Job.SkillsRequired.Count; i++)
+            {
+                sql+= $", (@Name{i})";
+            }
 
-        string cs = @"
-            server=hulk.mysql;
-            userid=root;
-            password=mchs2009;
-            database=jobhunt
-        ";
+            using var cmd = new MySqlCommand(sql, con);
+
+            for (int i = 0; i < Job.SkillsRequired.Count; i++)
+            {
+                cmd.Parameters.AddWithValue($"@Name{i}", Job.SkillsRequired[i]); 
+            }
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
+        }
 
         using var con = new MySqlConnection(cs);
         con.Open();
@@ -61,7 +119,6 @@ public class JobInfoController : ControllerBase
         InsertSkills(con);
 
         
-
         //Skills required attribute will be looped thru and added seperately to the skills table
 
            
