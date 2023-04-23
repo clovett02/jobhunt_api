@@ -11,10 +11,10 @@ namespace JobHunt
         bool Hybrid,
         bool Onsite,
         List<string> SkillsRequired,
-        DateOnly ApplicationDate,
+        DateTime ApplicationDate,
         DateTime ApplicationTime,
         bool Responded,
-        DateOnly ResponseDate,
+        DateTime ResponseDate,
         DateTime ResponseTime
     );
 }
