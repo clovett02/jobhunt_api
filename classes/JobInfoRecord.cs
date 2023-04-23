@@ -1,6 +1,6 @@
 namespace JobHunt
 {
-    public record JobRecord
+    public record JobInfoRecord
     (
         string CompanyName,
         string JobTitle,
