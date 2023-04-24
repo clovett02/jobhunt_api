@@ -1,4 +1,4 @@
-namespace JobHunt
+namespace JobHunt_API
 {
     public class JobInfo
     {

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 
-namespace JobHunt.Controller;
+namespace JobHunt_API.Controller;
 
 [ApiController]
 public class JobInfoController : ControllerBase
