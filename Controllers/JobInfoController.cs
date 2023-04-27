@@ -31,7 +31,7 @@ public class JobInfoController : ControllerBase
                 records.Add(new JobInfo());
                 records[i].CompanyName = rdr.GetString("CompanyName");
                 records[i].JobTitle = rdr.GetString("JobTitle");
-                records[i].JobDescription = rdr.GetString("JobDescription");
+                // records[i].JobDescription = rdr.GetString("JobDescription");
                 records[i].State = rdr.GetString("State");
                 records[i].City = rdr.GetString("City");
                 records[i].Remote = rdr.GetBoolean("Remote");
@@ -42,6 +42,7 @@ public class JobInfoController : ControllerBase
                 records[i].Responded = rdr.GetBoolean("Responded");
                 records[i].ResponseDate = rdr.GetDateTime("ResponseDate");
                 records[i].ResponseTime = rdr.GetDateTime("ResponseTime");
+                records[i].Denied = rdr.GetBoolean("Denied");
 
                 i++;
             }
@@ -69,17 +70,17 @@ public class JobInfoController : ControllerBase
     {
         void InsertJobs(MySqlConnection con)
         {
-            string sql = @"INSERT INTO jobs(CompanyName, JobTitle, JobDescription, State, City, Remote, Hybrid, Onsite, 
-            ApplicationDate, ApplicationTime, Responded, ResponseDate, ResponseTime) 
+            string sql = @"INSERT INTO jobs(CompanyName, JobTitle, State, City, Remote, Hybrid, Onsite, 
+            ApplicationDate, ApplicationTime, Responded, ResponseDate, ResponseTime, Denied) 
             
-            VALUES(@CompanyName, @JobTitle, @JobDescription, @State, @City, @Remote, @Hybrid, @Onsite, 
-            @ApplicationDate, @ApplicationTime, @Responded, @ResponseDate, @ResponseTime)";
+            VALUES(@CompanyName, @JobTitle, @State, @City, @Remote, @Hybrid, @Onsite, 
+            @ApplicationDate, @ApplicationTime, @Responded, @ResponseDate, @ResponseTime, @Denied)";
 
             using var cmd = new MySqlCommand(sql, con);
 
             cmd.Parameters.AddWithValue("@CompanyName", Job.CompanyName);
             cmd.Parameters.AddWithValue("@JobTitle", Job.JobTitle);
-            cmd.Parameters.AddWithValue("@JobDescription", Job.JobDescription);
+            // cmd.Parameters.AddWithValue("@JobDescription", Job.JobDescription);
             cmd.Parameters.AddWithValue("@State", Job.State);
             cmd.Parameters.AddWithValue("@City", Job.City);
             cmd.Parameters.AddWithValue("@Remote", Job.Remote);
@@ -90,6 +91,7 @@ public class JobInfoController : ControllerBase
             cmd.Parameters.AddWithValue("@Responded", Job.Responded);
             cmd.Parameters.AddWithValue("@ResponseDate", Job.ResponseDate);
             cmd.Parameters.AddWithValue("@ResponseTime", Job.ResponseTime);
+            cmd.Parameters.AddWithValue("@Denied", Job.Denied);
 
             cmd.Prepare();
             cmd.ExecuteNonQuery();

@@ -4,7 +4,7 @@ namespace JobHunt_API
     (
         string CompanyName,
         string JobTitle,
-        string JobDescription,
+        // string JobDescription,
         string State, 
         string City,
         bool Remote,
@@ -15,6 +15,7 @@ namespace JobHunt_API
         DateTime ApplicationTime,
         bool Responded,
         DateTime ResponseDate,
-        DateTime ResponseTime
+        DateTime ResponseTime,
+        bool Denied
     );
 }
