@@ -17,6 +17,7 @@ namespace JobHunt_API
         public bool Responded { get; set; }
         public DateTime ResponseDate { get; set; }
         public DateTime ResponseTime { get; set; }
+        public bool Denied { get; set; }
 
     }
 }
