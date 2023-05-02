@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
+using System.Text.Json;
 
 namespace JobHunt_API.Controller;
 
@@ -15,7 +16,7 @@ public class JobInfoController : ControllerBase
         ";
 
     [HttpGet("/jobinfo")]
-    public JsonContent Get()
+    public string Get()
     {
         JobInfo[] ReturnAllJobs(MySqlConnection con)
         {
@@ -64,7 +65,7 @@ public class JobInfoController : ControllerBase
                 ApplicationTime: {jobs[i].ApplicationTime}");
         }
 
-        JsonContent result = JsonContent.Create(jobs);
+        string result = JsonSerializer.Serialize(jobs);
         return result;
     }
 
