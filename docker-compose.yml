@@ -1,10 +1,10 @@
 version: "3.8"
 
 services:
-  jobhunt_api:
+  jobhuntapi:
     build:
       context: .
-    image: jobhunt_api:latest
+    image: jobhuntapi:latest
     networks:
       - My_2ndDocker_Network
     ports:
@@ -12,9 +12,9 @@ services:
 #    volumes:
 #      - /etc/letsencrypt:/etc/letsencrypt
 
-  nginx_jobhunt_api:
+  nginx_jobhuntapi:
     image: nginx:latest
-    container_name: nginx_jobhunt_api
+    container_name: nginx_jobhuntapi
     networks:
       My_2ndDocker_Network:
         ipv4_address: 192.168.3.103
@@ -22,7 +22,7 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
 #      - /etc/letsencrypt:/etc/letsencrypt
     depends_on:
-      - jobhunt_api
+      - jobhuntapi
     ports:
       - "80:80"
 #      - "443:443"
