@@ -15,7 +15,7 @@ public class JobInfoController : ControllerBase
         ";
 
     [HttpGet("/jobinfo")]
-    public void Get()
+    public JsonContent Get()
     {
         JobInfo[] ReturnAllJobs(MySqlConnection con)
         {
@@ -63,6 +63,9 @@ public class JobInfoController : ControllerBase
                 ApplicationDate: {jobs[i].ApplicationDate}
                 ApplicationTime: {jobs[i].ApplicationTime}");
         }
+
+        JsonContent result = JsonContent.Create(jobs);
+        return result;
     }
 
     [HttpPost("/jobinfo")]
