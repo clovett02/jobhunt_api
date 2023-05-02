@@ -5,8 +5,4 @@ COPY . .
 
 EXPOSE 5000
 
-RUN ["dotnet", "restore"]
-
-RUN ["dotnet", "build"]
-
 CMD [ "dotnet", "run" ]
