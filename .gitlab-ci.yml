@@ -7,7 +7,7 @@ deploy-job:
   script:
     - echo "Deploying application..."
     - ssh -tt chris@thor.docker '
-        cd docker_files/APIs/JobHunt && 
+        cd docker_files/APIs/JobHunt_API && 
         git restore . &&
         git pull &&
         npm install &&
