@@ -12,11 +12,9 @@ builder.Services.AddSwaggerGen();
 //     builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
 // }));
 
-builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+builder.Services.AddCors(o => o.AddPolicy("MyPolicy", policy =>
 {
-    builder.WithOrigins(
-        "http://thor.jobhunt"
-    );
+    policy.WithOrigins("http://thor.jobhunt");
 }));
 
 var app = builder.Build();
