@@ -7,9 +7,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+// {
+//     builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+// }));
+
 builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 {
-    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+    builder.WithOrigins(
+        "http://thor.jobhunt"
+    );
 }));
 
 var app = builder.Build();
