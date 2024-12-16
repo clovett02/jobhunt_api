@@ -81,7 +81,7 @@ public class JobInfoController : ControllerBase
 
     [EnableCors("MyPolicy")]
     [HttpPost("/jobinfo")]
-    public void Post([FromBody] JobInfoRecord Job)
+    public JobInfoRecord Post([FromBody] JobInfoRecord Job)
     {
         void InsertJobs(MySqlConnection con)
         {
@@ -135,6 +135,7 @@ public class JobInfoController : ControllerBase
         InsertJobs(con);
         InsertSkills(con);
 
+        return Job;
         
         //Skills required attribute will be looped thru and added seperately to the skills table
 
