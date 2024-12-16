@@ -9,7 +9,7 @@ public class JobInfoController : ControllerBase
 {
     ///Connection String
     string cs = @"
-            server=hulk.mysql;
+            server=thor.mysql;
             userid=root;
             password=mchs2009;
             database=jobhunt
@@ -66,6 +66,15 @@ public class JobInfoController : ControllerBase
         }
 
         string result = JsonSerializer.Serialize(jobs);
+        return result;
+    }
+
+    [HttpGet("/jobsummary")]
+    public string GetJobSummary()
+    {
+        
+
+        string result = JsonSerializer.Serialize("");
         return result;
     }
 
