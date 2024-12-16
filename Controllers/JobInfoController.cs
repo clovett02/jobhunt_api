@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 using System.Text.Json;
 
 namespace JobHunt_API.Controller;
 
+[EnableCors("MyPolicy")]
 [ApiController]
 public class JobInfoController : ControllerBase
 {
