@@ -104,9 +104,9 @@ public class JobInfoController : ControllerBase
             cmd.Parameters.AddWithValue("@ApplicationDate", Job.ApplicationDate);
             cmd.Parameters.AddWithValue("@ApplicationTime", Job.ApplicationTime);
             // cmd.Parameters.AddWithValue("@Responded", Job.Responded);
-            cmd.Parameters.AddWithValue("@ResponseDate", Job.ResponseDate);
-            cmd.Parameters.AddWithValue("@ResponseTime", Job.ResponseTime);
-            cmd.Parameters.AddWithValue("@Denied", Job.Denied);
+            //cmd.Parameters.AddWithValue("@ResponseDate", Job.ResponseDate);
+            //cmd.Parameters.AddWithValue("@ResponseTime", Job.ResponseTime);
+            //cmd.Parameters.AddWithValue("@Denied", Job.Denied);
 
             cmd.Prepare();
             cmd.ExecuteNonQuery();
