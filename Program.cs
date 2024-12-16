@@ -12,7 +12,7 @@ builder.Services.AddSwaggerGen();
 //     builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
 // }));
 
-builder.Services.AddCors(o => o.AddPolicy("MyPolicy", policy =>
+builder.Services.AddCors(o => o.AddPolicy(name: "MyPolicy", policy =>
 {
     policy.WithOrigins("http://thor.jobhunt");
 }));
@@ -26,7 +26,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// app.UseHttpsRedirection();
+
+app.UseHttpsRedirection();
+
+app.UseRouting();
 
 app.UseCors("MyPolicy");
 
