@@ -12,12 +12,12 @@ builder.Services.AddCors(o => o.AddDefaultPolicy(builder =>
     builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
 }));
 
-// builder.Services.AddCors(o => o.AddPolicy("MyPolicy", policy =>
-// {
-//     policy.WithOrigins("http://thor.jobhunt")
-//                 .AllowAnyHeader()
-//                 .AllowAnyMethod();
-// }));
+builder.Services.AddCors(o => o.AddPolicy("MyPolicy", policy =>
+{
+    policy.WithOrigins("http://thor.jobhunt")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+}));
 
 builder.Services.AddControllers();
 
@@ -33,7 +33,7 @@ var app = builder.Build();
 app.UseRouting();
 
 //app.UseCors("MyPolicy");
-//app.UseCors();
+app.UseCors();
 
 app.UseAuthorization();
 
