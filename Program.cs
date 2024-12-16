@@ -7,16 +7,16 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();
 
-// builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
-// {
-//     builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
-// }));
-
-builder.Services.AddCors(o => o.AddPolicy("MyPolicy", policy =>
+builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 {
-    policy.WithOrigins("http://thor.jobhunt")
-                .AllowAnyHeader()
-                .AllowAnyMethod();
+    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+}));
+
+// builder.Services.AddCors(o => o.AddPolicy("MyPolicy", policy =>
+// {
+//     policy.WithOrigins("http://thor.jobhunt")
+//                 .AllowAnyHeader()
+//                 .AllowAnyMethod();
 }));
 
 builder.Services.AddControllers();
