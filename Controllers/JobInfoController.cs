@@ -110,7 +110,7 @@ public class JobInfoController : ControllerBase
             cmd.Prepare();
             cmd.ExecuteNonQuery();
         }
-        /*void InsertSkills(MySqlConnection con)
+        void InsertSkills(MySqlConnection con)
         {
             string sql = $"INSERT IGNORE INTO skills(Name) VALUES(@Name{0})";
             for (int i = 1; i < Job.SkillsRequired.Count; i++)
@@ -126,13 +126,13 @@ public class JobInfoController : ControllerBase
             }
             cmd.Prepare();
             cmd.ExecuteNonQuery();
-        }*/
+        }
 
         using var con = new MySqlConnection(cs);
         con.Open();
 
         InsertJobs(con);
-        //InsertSkills(con);
+        InsertSkills(con);
 
         
         //Skills required attribute will be looped thru and added seperately to the skills table
