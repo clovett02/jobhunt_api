@@ -16,12 +16,13 @@ public class JobInfoController : ControllerBase
             database=jobhunt
         ";
 
+    [EnableCors("MyPolicy")]
     [HttpGet("/jobinfo")]
     public string Get()
     {
         JobInfo[] ReturnAllJobs(MySqlConnection con)
         {
-            string sql = "SELECT * FROM jobs";
+            string sql = "SELECT * FROM jobs WHERE ApplicationDate > DATE_SUB(NOW(), INTERVAL 1 YEAR)";
             using var cmd = new MySqlCommand(sql, con);
             List<JobInfo> records = new List<JobInfo>();
 
