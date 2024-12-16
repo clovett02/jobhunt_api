@@ -17,7 +17,7 @@ builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 //     policy.WithOrigins("http://thor.jobhunt")
 //                 .AllowAnyHeader()
 //                 .AllowAnyMethod();
-}));
+// }));
 
 builder.Services.AddControllers();
 
