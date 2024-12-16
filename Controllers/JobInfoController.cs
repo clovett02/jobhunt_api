@@ -5,7 +5,6 @@ using System.Text.Json;
 
 namespace JobHunt_API.Controller;
 
-[EnableCors("MyPolicy")]
 [ApiController]
 public class JobInfoController : ControllerBase
 {
@@ -80,7 +79,6 @@ public class JobInfoController : ControllerBase
         return result;
     }
 
-    [EnableCors("MyPolicy")]
     [HttpPost("/jobinfo")]
     public void Post([FromBody] JobInfoRecord Job)
     {
