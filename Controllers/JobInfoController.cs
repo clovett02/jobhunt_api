@@ -80,6 +80,7 @@ public class JobInfoController : ControllerBase
         return result;
     }
 
+    [EnableCors("MyPolicy")]
     [HttpPost("/jobinfo")]
     public void Post([FromBody] JobInfoRecord Job)
     {
