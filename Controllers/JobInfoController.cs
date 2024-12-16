@@ -134,7 +134,7 @@ public class JobInfoController : ControllerBase
         con.Open();
 
         InsertJobs(con);
-        InsertSkills(con);
+        //InsertSkills(con);
 
         
         //Skills required attribute will be looped thru and added seperately to the skills table
