@@ -11,6 +11,7 @@ deploy-job:
         git restore . &&
         git pull &&
         npm install &&
+        docker image rm jobhunt
         docker build -t jobhunt . &&
         docker compose down &&
         docker compose up -d'
