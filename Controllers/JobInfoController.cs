@@ -83,7 +83,7 @@ public class JobInfoController : ControllerBase
     }
 
     [EnableCors("MyPolicy")]
-    [HttpPost("/jobinfo")]
+    [HttpPost("/addjob")]
     public String Post([FromBody] JobInfoRecord Job)
     {
         void InsertJobs(MySqlConnection con)
