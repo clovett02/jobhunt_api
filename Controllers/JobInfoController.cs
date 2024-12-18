@@ -51,25 +51,6 @@ public class JobInfoController : ControllerBase
                 i++;
             }
             
-            /*while(rdr.Read())
-            {
-                    records.Add(new JobInfoRecord(
-                    CompanyName: rdr.GetString("CompanyName"),
-                    JobTitle: rdr.GetString("JobTitle"),
-                    State: rdr.GetString("State"),
-                    City: rdr.GetString("City"),
-                    Remote: rdr.GetBoolean("Remote"),
-                    Hybrid: rdr.GetBoolean("Hybrid"),
-                    Onsite: rdr.GetBoolean("Onsite"),
-                    SkillsRequired: new List<string> {"", ""},
-                    ApplicationDate: rdr.GetDateTime("ApplicationDate"),
-                    ApplicationTime: rdr.GetDateTime("ApplicationTime"),
-                    Responded: rdr.GetBoolean("Responded"),
-                    ResponseDate: rdr.GetDateTime("ResponseDate"),
-                    ResponseTime: rdr.GetDateTime("ResponseTime"),
-                    Denied: rdr.GetBoolean("Denied")
-                ));
-            }*/
             JobInfo[] result = records.ToArray();
             return result;
         }
