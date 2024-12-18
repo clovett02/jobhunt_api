@@ -18,8 +18,8 @@ builder.Services.AddCors(options =>
         
         policy =>
         {
-            policy.WithOrigins("http://thor.jobhunt:5000",
-                                "http://thor.jobhuntapi:5000")
+            policy.WithOrigins("http://thor.jobhunt",
+                                "http://thor.jobhuntapi")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
         });
