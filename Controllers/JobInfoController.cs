@@ -17,10 +17,23 @@ public class JobInfoController : ControllerBase
         ";
 
     [EnableCors("MyPolicy")]
-    [HttpGet("/jobinfo")]
-    public string Get()
+    [HttpGet("/api/job/{jobID}")]
+    public string GetJob(string jobID)
     {
-        JobInfo[] ReturnAllJobs(MySqlConnection con)
+        string result = "";
+        using var con = new (MySqlConnection con)
+        {
+            
+        }
+
+        return result;
+    }
+
+    [EnableCors("MyPolicy")]
+    [HttpGet("/api/jobs/{daterange}")]
+    public string GetJobs(string daterange)
+    {
+        JobInfo[] ReturnJobs(MySqlConnection con)
         {
             string sql = "SELECT * FROM jobs WHERE ApplicationDate > DATE_SUB(NOW(), INTERVAL 1 YEAR)";
             using var cmd = new MySqlCommand(sql, con);
@@ -58,7 +71,7 @@ public class JobInfoController : ControllerBase
         using var con = new MySqlConnection(cs);
         con.Open();
 
-        JobInfo[] jobs = ReturnAllJobs(con);
+        JobInfo[] jobs = ReturnJobs(con);
 
         for (int i = 0; i < jobs.Length; i++)
         {
@@ -82,8 +95,9 @@ public class JobInfoController : ControllerBase
         return result;
     }
 
+
     [EnableCors("MyPolicy")]
-    [HttpPost("/addjob")]
+    [HttpPost("/api/addjob")]
     public String Post([FromBody] JobInfoRecord Job)
     {
         void InsertJobs(MySqlConnection con)
