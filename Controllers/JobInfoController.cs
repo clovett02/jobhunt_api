@@ -21,7 +21,7 @@ public class JobInfoController : ControllerBase
     public string GetJob(string jobID)
     {
         string result = "";
-        using var con = new (MySqlConnection con)
+        using var con = new MySqlConnection(cs)
         {
             
         }
