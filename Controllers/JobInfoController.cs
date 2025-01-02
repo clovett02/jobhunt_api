@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Localization.Routing;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 using System.Text.Json;
@@ -15,13 +16,38 @@ public class JobInfoController : ControllerBase
             password=mchs2009;
             database=jobhunt
         ";
+    static JobInfo ReturnJob(MySqlConnection con, string ID)
+    {
+        string sql = $"SELECT * FROM jobs WHERE ID = {ID})";
+        using var cmd = new MySqlCommand(sql, con);
+        using MySqlDataReader rdr = cmd.ExecuteReader();
+        JobInfo record = new JobInfo(
+            JobID: rdr.GetString("ID"),
+            CompanyName: rdr.GetString("CompanyName"),
+            JobTitle: rdr.GetString("JobTitle"),
+            JobDescription: rdr.GetString("JobDescription"),
+            State: rdr.GetString("State"),
+            City:rdr.GetString("City"),
+            Remote:rdr.GetBoolean("Remote"),
+            Hybrid:rdr.GetBoolean("Hybrid"),
+            Onsite:rdr.GetBoolean("Onsite"),
+            ApplicationDate: rdr.GetDateTime("ApplicationDate"),
+            ApplicationTime: rdr.GetDateTime("ApplicationTime"),
+            Responded: rdr.GetBoolean("Responded"),
+            ResponseDate: rdr.GetDateTime("ResponseDate"),
+            ResponseTime: rdr.GetDateTime("ResponseTime"),
+            Denied: rdr.GetBoolean("Denied")
+            );
+        return record;
+    }
 
     [EnableCors("MyPolicy")]
     [HttpGet("/api/job/{jobID}")]
     public string GetJob(string jobID)
     {
+        
         string result = "";
-        using var con = new MySqlConnection(cs)
+        using var con = new MySqlConnection(cs);
         {
             
         }
