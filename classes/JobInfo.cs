@@ -2,7 +2,29 @@ namespace JobHunt_API
 {
     public class JobInfo
     {
+        public JobInfo(string JobID, string CompanyName, string JobTitle, string JobDescription, string State,
+        string City, bool Remote, bool Hybrid, bool Onsite, string[] SkillsRequired, DateTime ApplicationDate,
+        DateTime ApplicationTime, bool Responded, DateTime ResponseDate, DateTime ResponseTime, bool Denied)
+        {
+            this.JobID = JobID;
+            this.CompanyName = CompanyName;
+            this.JobTitle = JobTitle;
+            this.JobDescription = JobDescription;
+            this.State = State;
+            this.City = City;
+            this.Remote = Remote;
+            this.Hybrid = Hybrid;
+            this.Onsite = Onsite;
+            this.SkillsRequired = SkillsRequired;
+            this.ApplicationDate = ApplicationDate;
+            this.ApplicationTime = ApplicationTime;
+            this.Responded = Responded;
+            this.ResponseDate = ResponseDate;
+            this.ResponseTime = ResponseTime;
+            this.Denied = Denied;
+        }
         // public Guid Id { get; set; }
+        public string JobID { get; set; }
         public string CompanyName { get; set; }
         public string JobTitle { get; set; }
         public string JobDescription { get; set; }
