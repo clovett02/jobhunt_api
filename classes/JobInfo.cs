@@ -3,7 +3,7 @@ namespace JobHunt_API
     public class JobInfo
     {
         public JobInfo(string JobID, string CompanyName, string JobTitle, string JobDescription, string State,
-        string City, bool Remote, bool Hybrid, bool Onsite, string[] SkillsRequired, DateTime ApplicationDate,
+        string City, bool Remote, bool Hybrid, bool Onsite, DateTime ApplicationDate,
         DateTime ApplicationTime, bool Responded, DateTime ResponseDate, DateTime ResponseTime, bool Denied)
         {
             this.JobID = JobID;
@@ -15,7 +15,6 @@ namespace JobHunt_API
             this.Remote = Remote;
             this.Hybrid = Hybrid;
             this.Onsite = Onsite;
-            this.SkillsRequired = SkillsRequired;
             this.ApplicationDate = ApplicationDate;
             this.ApplicationTime = ApplicationTime;
             this.Responded = Responded;
