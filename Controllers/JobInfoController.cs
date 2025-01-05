@@ -40,6 +40,69 @@ public class JobInfoController : ControllerBase
             );
         return record;
     }
+    static GetJobInfo[] ReturnJobs(MySqlConnection con, string begindate, string enddate)
+    {
+        string sql = $"SELECT * FROM jobs WHERE ApplicationDate >= {begindate} AND ApplicationDate < {enddate})";
+        using var cmd = new MySqlCommand(sql, con);
+        List<GetJobInfo> records = new List<GetJobInfo>();
+        
+        using MySqlDataReader rdr = cmd.ExecuteReader();
+        
+        while(rdr.Read())
+        {
+            records.Add(new GetJobInfo(
+                JobID: rdr.GetString("ID"),
+                CompanyName: rdr.GetString("CompanyName"),
+                JobTitle: rdr.GetString("JobTitle"),
+                JobDescription: rdr.GetString("JobDescription"),
+                State: rdr.GetString("State"),
+                City: rdr.GetString("City"),
+                Remote: rdr.GetBoolean("Remote"),
+                Hybrid: rdr.GetBoolean("Hybrid"),
+                Onsite: rdr.GetBoolean("Onsite"),
+                ApplicationDate: rdr.GetDateTime("ApplicationDate"),
+                ApplicationTime: rdr.GetDateTime("ApplicationTime"),
+                Responded: rdr.GetBoolean("Responded"),
+                ResponseDate: rdr.GetDateTime("ResponseDate"),
+                ResponseTime: rdr.GetDateTime("ResponseTime"),
+                Denied: rdr.GetBoolean("Denied")
+            ));
+        }
+        GetJobInfo[] result = records.ToArray();
+        return result;
+    }
+    static GetJobInfo[] ReturnJobs(MySqlConnection con)
+    {
+        string sql = $"SELECT * FROM jobs";
+        using var cmd = new MySqlCommand(sql, con);
+        List<GetJobInfo> records = new List<GetJobInfo>();
+
+        using MySqlDataReader rdr = cmd.ExecuteReader();
+
+        while(rdr.Read())
+        {
+            records.Add(new GetJobInfo(
+                JobID: rdr.GetString("ID"),
+                CompanyName: rdr.GetString("CompanyName"),
+                JobTitle: rdr.GetString("JobTitle"),
+                JobDescription: rdr.GetString("JobDescription"),
+                State: rdr.GetString("State"),
+                City: rdr.GetString("City"),
+                Remote: rdr.GetBoolean("Remote"),
+                Hybrid: rdr.GetBoolean("Hybrid"),
+                Onsite: rdr.GetBoolean("Onsite"),
+                ApplicationDate: rdr.GetDateTime("ApplicationDate"),
+                ApplicationTime: rdr.GetDateTime("ApplicationTime"),
+                Responded: rdr.GetBoolean("Responded"),
+                ResponseDate: rdr.GetDateTime("ResponseDate"),
+                ResponseTime: rdr.GetDateTime("ResponseTime"),
+                Denied: rdr.GetBoolean("Denied")
+            ));
+        }
+        
+        GetJobInfo[] result = records.ToArray();
+        return result;
+    }
 
     [EnableCors("MyPolicy")]
     [HttpGet("/api/job/{jobID}")]
@@ -59,45 +122,42 @@ public class JobInfoController : ControllerBase
     [HttpGet("/api/jobs/{daterange}")]
     public string GetJobs(string daterange)
     {
-        JobInfo[] ReturnJobs(MySqlConnection con)
+        GetJobInfo[] ReturnJobs(MySqlConnection con)
         {
             string sql = "SELECT * FROM jobs WHERE ApplicationDate > DATE_SUB(NOW(), INTERVAL 1 YEAR)";
             using var cmd = new MySqlCommand(sql, con);
-            // List<JobInfoRecord> records = new List<JobInfoRecord>();
-            List<JobInfo> records = new List<JobInfo>();
+            List<GetJobInfo> records = new List<GetJobInfo>();
 
             using MySqlDataReader rdr = cmd.ExecuteReader();
 
-            int i = 0;
             while(rdr.Read())
             {
-                records.Add(new JobInfo());
-                records[i].CompanyName = rdr.GetString("CompanyName");
-                records[i].JobTitle = rdr.GetString("JobTitle");
-                // records[i].JobDescription = rdr.GetString("JobDescription");
-                records[i].State = rdr.GetString("State");
-                records[i].City = rdr.GetString("City");
-                records[i].Remote = rdr.GetBoolean("Remote");
-                records[i].Hybrid = rdr.GetBoolean("Hybrid");
-                records[i].Onsite = rdr.GetBoolean("Onsite");
-                records[i].ApplicationDate = rdr.GetDateTime("ApplicationDate");
-                records[i].ApplicationTime = rdr.GetDateTime("ApplicationTime");
-                records[i].Responded = rdr.GetBoolean("Responded");
-                records[i].ResponseDate = rdr.GetDateTime("ResponseDate");
-                records[i].ResponseTime = rdr.GetDateTime("ResponseTime");
-                records[i].Denied = rdr.GetBoolean("Denied");
-
-                i++;
+                records.Add(new GetJobInfo(
+                    CompanyName: rdr.GetString("CompanyName"),
+                    JobTitle: rdr.GetString("JobTitle"),
+                    JobDescription: rdr.GetString("JobDescription"),
+                    State: rdr.GetString("State"),
+                    City: rdr.GetString("City"),
+                    Remote: rdr.GetBoolean("Remote"),
+                    Hybrid: rdr.GetBoolean("Hybrid"),
+                    Onsite: rdr.GetBoolean("Onsite"),
+                    ApplicationDate: rdr.GetDateTime("ApplicationDate"),
+                    ApplicationTime: rdr.GetDateTime("ApplicationTime"),
+                    Responded: rdr.GetBoolean("Responded"),
+                    ResponseDate: rdr.GetDateTime("ResponseDate"),
+                    ResponseTime: rdr.GetDateTime("ResponseTime"),
+                    Denied: rdr.GetBoolean("Denied")
+                ));
             }
             
-            JobInfo[] result = records.ToArray();
+            GetJobInfo[] result = records.ToArray();
             return result;
         }
 
         using var con = new MySqlConnection(cs);
         con.Open();
 
-        JobInfo[] jobs = ReturnJobs(con);
+        GetJobInfo[] jobs = ReturnJobs(con);
 
         for (int i = 0; i < jobs.Length; i++)
         {
