@@ -16,12 +16,12 @@ public class JobInfoController : ControllerBase
             password=mchs2009;
             database=jobhunt
         ";
-    static JobInfo ReturnJob(MySqlConnection con, string ID)
+    static GetJobInfo ReturnJob(MySqlConnection con, string ID)
     {
         string sql = $"SELECT * FROM jobs WHERE ID = {ID})";
         using var cmd = new MySqlCommand(sql, con);
         using MySqlDataReader rdr = cmd.ExecuteReader();
-        JobInfo record = new JobInfo(
+        GetJobInfo record = new GetJobInfo(
             JobID: rdr.GetString("ID"),
             CompanyName: rdr.GetString("CompanyName"),
             JobTitle: rdr.GetString("JobTitle"),
@@ -73,7 +73,7 @@ public class JobInfoController : ControllerBase
     }
     static GetJobInfo[] ReturnJobs(MySqlConnection con)
     {
-        string sql = $"SELECT * FROM jobs";
+        string sql = $"SELECT * FROM jobs WHERE ApplicationDate > DATE_SUB(NOW(), INTERVAL 1 YEAR)";
         using var cmd = new MySqlCommand(sql, con);
         List<GetJobInfo> records = new List<GetJobInfo>();
 
@@ -105,55 +105,20 @@ public class JobInfoController : ControllerBase
     }
 
     [EnableCors("MyPolicy")]
-    [HttpGet("/api/job/{jobID}")]
+    [HttpGet("/api/job/byID/{jobID}")]
     public string GetJob(string jobID)
     {
         
-        string result = "";
         using var con = new MySqlConnection(cs);
-        {
-            
-        }
-
-        return result;
+        GetJobInfo result = ReturnJob(con, jobID);
+        return JsonSerializer.Serialize(result);
+        
     }
 
     [EnableCors("MyPolicy")]
-    [HttpGet("/api/jobs/{daterange}")]
-    public string GetJobs(string daterange)
+    [HttpGet("/api/jobs/bydate/{begindate}/{enddate}")]
+    public string GetJobs(string begindate, string enddate)
     {
-        GetJobInfo[] ReturnJobs(MySqlConnection con)
-        {
-            string sql = "SELECT * FROM jobs WHERE ApplicationDate > DATE_SUB(NOW(), INTERVAL 1 YEAR)";
-            using var cmd = new MySqlCommand(sql, con);
-            List<GetJobInfo> records = new List<GetJobInfo>();
-
-            using MySqlDataReader rdr = cmd.ExecuteReader();
-
-            while(rdr.Read())
-            {
-                records.Add(new GetJobInfo(
-                    CompanyName: rdr.GetString("CompanyName"),
-                    JobTitle: rdr.GetString("JobTitle"),
-                    JobDescription: rdr.GetString("JobDescription"),
-                    State: rdr.GetString("State"),
-                    City: rdr.GetString("City"),
-                    Remote: rdr.GetBoolean("Remote"),
-                    Hybrid: rdr.GetBoolean("Hybrid"),
-                    Onsite: rdr.GetBoolean("Onsite"),
-                    ApplicationDate: rdr.GetDateTime("ApplicationDate"),
-                    ApplicationTime: rdr.GetDateTime("ApplicationTime"),
-                    Responded: rdr.GetBoolean("Responded"),
-                    ResponseDate: rdr.GetDateTime("ResponseDate"),
-                    ResponseTime: rdr.GetDateTime("ResponseTime"),
-                    Denied: rdr.GetBoolean("Denied")
-                ));
-            }
-            
-            GetJobInfo[] result = records.ToArray();
-            return result;
-        }
-
         using var con = new MySqlConnection(cs);
         con.Open();
 
@@ -184,16 +149,10 @@ public class JobInfoController : ControllerBase
 
     [EnableCors("MyPolicy")]
     [HttpPost("/api/addjob")]
-    public String Post([FromBody] JobInfoRecord Job)
+    public String Post([FromBody] PostJobInfo Job)
     {
         void InsertJobs(MySqlConnection con)
         {
-            /*string sql = @"INSERT INTO jobs(CompanyName, JobTitle, State, City, Remote, Hybrid, Onsite, 
-            ApplicationDate, ApplicationTime, Responded, ResponseDate, ResponseTime, Denied) 
-            
-            VALUES(@CompanyName, @JobTitle, @State, @City, @Remote, @Hybrid, @Onsite, 
-            @ApplicationDate, @ApplicationTime, @Responded, @ResponseDate, @ResponseTime, @Denied)";*/
-
             string sql = @"INSERT INTO jobs(CompanyName, JobTitle, State, City, Remote, Hybrid, Onsite, 
             ApplicationDate, ApplicationTime) 
             
@@ -204,7 +163,7 @@ public class JobInfoController : ControllerBase
 
             cmd.Parameters.AddWithValue("@CompanyName", Job.CompanyName);
             cmd.Parameters.AddWithValue("@JobTitle", Job.JobTitle);
-            // cmd.Parameters.AddWithValue("@JobDescription", Job.JobDescription);
+            cmd.Parameters.AddWithValue("@JobDescription", Job.JobDescription);
             cmd.Parameters.AddWithValue("@State", Job.State);
             cmd.Parameters.AddWithValue("@City", Job.City);
             cmd.Parameters.AddWithValue("@Remote", Job.Remote);
@@ -212,10 +171,6 @@ public class JobInfoController : ControllerBase
             cmd.Parameters.AddWithValue("@Onsite", Job.Onsite);
             cmd.Parameters.AddWithValue("@ApplicationDate", Job.ApplicationDate);
             cmd.Parameters.AddWithValue("@ApplicationTime", Job.ApplicationTime);
-            /*cmd.Parameters.AddWithValue("@Responded", Job.Responded);
-            cmd.Parameters.AddWithValue("@ResponseDate", Job.ResponseDate);
-            cmd.Parameters.AddWithValue("@ResponseTime", Job.ResponseTime);
-            cmd.Parameters.AddWithValue("@Denied", Job.Denied);*/
 
             cmd.Prepare();
             cmd.ExecuteNonQuery();
