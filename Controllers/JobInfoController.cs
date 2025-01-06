@@ -153,10 +153,10 @@ public class JobInfoController : ControllerBase
     {
         void InsertJobs(MySqlConnection con)
         {
-            string sql = @"INSERT INTO jobs(CompanyName, JobTitle, State, City, Remote, Hybrid, Onsite, 
+            string sql = @"INSERT INTO jobs(CompanyName, JobTitle, URL, State, City, Remote, Hybrid, Onsite, 
             ApplicationDate, ApplicationTime) 
             
-            VALUES(@CompanyName, @JobTitle, @State, @City, @Remote, @Hybrid, @Onsite, 
+            VALUES(@CompanyName, @JobTitle, @URL, @State, @City, @Remote, @Hybrid, @Onsite, 
             @ApplicationDate, @ApplicationTime)";
 
             using var cmd = new MySqlCommand(sql, con);
@@ -164,6 +164,7 @@ public class JobInfoController : ControllerBase
             cmd.Parameters.AddWithValue("@CompanyName", Job.CompanyName);
             cmd.Parameters.AddWithValue("@JobTitle", Job.JobTitle);
             cmd.Parameters.AddWithValue("@JobDescription", Job.JobDescription);
+            cmd.Parameters.AddWithValue("@URL", Job.JobDescription);
             cmd.Parameters.AddWithValue("@State", Job.State);
             cmd.Parameters.AddWithValue("@City", Job.City);
             cmd.Parameters.AddWithValue("@Remote", Job.Remote);
