@@ -5,6 +5,7 @@ namespace JobHunt_API
         string CompanyName,
         string JobTitle,
         string JobDescription,
+        string URL,
         string State, 
         string City,
         bool Remote,
