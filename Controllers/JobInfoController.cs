@@ -123,7 +123,7 @@ public class JobInfoController : ControllerBase
         return result;
     }
 
-    public static void InsertJob(MySqlConnection con)
+    public static void InsertJob(MySqlConnection con, PostJobInfo Job)
     {
         string sql = @"INSERT INTO jobs(CompanyName, JobTitle, URL, State, City, Remote, Hybrid, Onsite, 
         ApplicationDate, ApplicationTime) 
@@ -149,7 +149,7 @@ public class JobInfoController : ControllerBase
         cmd.ExecuteNonQuery();
     }
 
-    public static void InsertSkills(MySqlConnection con)
+    /*public static void InsertSkills(MySqlConnection con, PostJobSkills Job)
     {
         //Skills required attribute will be looped thru and added seperately to the skills table
         string sql = $"INSERT IGNORE INTO skills(Name) VALUES(@Name{0})";
@@ -166,7 +166,7 @@ public class JobInfoController : ControllerBase
         }
         cmd.Prepare();
         cmd.ExecuteNonQuery();
-    }
+    }*/
 
     [EnableCors("MyPolicy")]
     [HttpGet("/api/job/byID/{jobID}")]
@@ -219,7 +219,7 @@ public class JobInfoController : ControllerBase
         using MySqlConnection con = new MySqlConnection(cs);
         con.Open();
 
-        InsertJob(con);
+        InsertJob(con, Job);
 
         con.Close();
         return "201";
