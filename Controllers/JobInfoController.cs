@@ -5,6 +5,7 @@ using MySql.Data.MySqlClient;
 using System.Text.Json;
 using JobHunt_API.Record;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 
 namespace JobHunt_API.Controller;
 
@@ -122,6 +123,51 @@ public class JobInfoController : ControllerBase
         return result;
     }
 
+    public static void InsertJob(MySqlConnection con)
+    {
+        string sql = @"INSERT INTO jobs(CompanyName, JobTitle, URL, State, City, Remote, Hybrid, Onsite, 
+        ApplicationDate, ApplicationTime) 
+        
+        VALUES(@CompanyName, @JobTitle, @URL, @State, @City, @Remote, @Hybrid, @Onsite, 
+        @ApplicationDate, @ApplicationTime);";
+
+        using MySqlCommand cmd = new MySqlCommand(sql, con);
+
+        cmd.Parameters.AddWithValue("@CompanyName", Job.CompanyName);
+        cmd.Parameters.AddWithValue("@JobTitle", Job.JobTitle);
+        cmd.Parameters.AddWithValue("@JobDescription", Job.JobDescription);
+        cmd.Parameters.AddWithValue("@URL", Job.JobDescription);
+        cmd.Parameters.AddWithValue("@State", Job.State);
+        cmd.Parameters.AddWithValue("@City", Job.City);
+        cmd.Parameters.AddWithValue("@Remote", Job.Remote);
+        cmd.Parameters.AddWithValue("@Hybrid", Job.Hybrid);
+        cmd.Parameters.AddWithValue("@Onsite", Job.Onsite);
+        cmd.Parameters.AddWithValue("@ApplicationDate", Job.ApplicationDate);
+        cmd.Parameters.AddWithValue("@ApplicationTime", Job.ApplicationTime);
+
+        cmd.Prepare();
+        cmd.ExecuteNonQuery();
+    }
+
+    public static void InsertSkills(MySqlConnection con)
+    {
+        //Skills required attribute will be looped thru and added seperately to the skills table
+        string sql = $"INSERT IGNORE INTO skills(Name) VALUES(@Name{0})";
+        for (int i = 1; i < Job.SkillsRequired.Count; i++)
+        {
+            sql+= $", (@Name{i})";
+        }
+
+        using var cmd = new MySqlCommand(sql, con);
+
+        for (int i = 0; i < Job.SkillsRequired.Count; i++)
+        {
+            cmd.Parameters.AddWithValue($"@Name{i}", Job.SkillsRequired[i]); 
+        }
+        cmd.Prepare();
+        cmd.ExecuteNonQuery();
+    }
+
     [EnableCors("MyPolicy")]
     [HttpGet("/api/job/byID/{jobID}")]
     public string GetJob(string jobID)
@@ -170,59 +216,15 @@ public class JobInfoController : ControllerBase
     [HttpPost("/api/addjob")]
     public String Post([FromBody] PostJobInfo Job)
     {
-        void InsertJob(MySqlConnection con)
-        {
-            string sql = @"INSERT INTO jobs(CompanyName, JobTitle, URL, State, City, Remote, Hybrid, Onsite, 
-            ApplicationDate, ApplicationTime) 
-            
-            VALUES(@CompanyName, @JobTitle, @URL, @State, @City, @Remote, @Hybrid, @Onsite, 
-            @ApplicationDate, @ApplicationTime);";
-
-            using MySqlCommand cmd = new MySqlCommand(sql, con);
-
-            cmd.Parameters.AddWithValue("@CompanyName", Job.CompanyName);
-            cmd.Parameters.AddWithValue("@JobTitle", Job.JobTitle);
-            cmd.Parameters.AddWithValue("@JobDescription", Job.JobDescription);
-            cmd.Parameters.AddWithValue("@URL", Job.JobDescription);
-            cmd.Parameters.AddWithValue("@State", Job.State);
-            cmd.Parameters.AddWithValue("@City", Job.City);
-            cmd.Parameters.AddWithValue("@Remote", Job.Remote);
-            cmd.Parameters.AddWithValue("@Hybrid", Job.Hybrid);
-            cmd.Parameters.AddWithValue("@Onsite", Job.Onsite);
-            cmd.Parameters.AddWithValue("@ApplicationDate", Job.ApplicationDate);
-            cmd.Parameters.AddWithValue("@ApplicationTime", Job.ApplicationTime);
-
-            cmd.Prepare();
-            cmd.ExecuteNonQuery();
-        }
-        /*void InsertSkills(MySqlConnection con)
-        {
-            string sql = $"INSERT IGNORE INTO skills(Name) VALUES(@Name{0})";
-            for (int i = 1; i < Job.SkillsRequired.Count; i++)
-            {
-                sql+= $", (@Name{i})";
-            }
-
-            using var cmd = new MySqlCommand(sql, con);
-
-            for (int i = 0; i < Job.SkillsRequired.Count; i++)
-            {
-                cmd.Parameters.AddWithValue($"@Name{i}", Job.SkillsRequired[i]); 
-            }
-            cmd.Prepare();
-            cmd.ExecuteNonQuery();
-        }*/
-
         using MySqlConnection con = new MySqlConnection(cs);
         con.Open();
 
         InsertJob(con);
-        //InsertSkills(con);
 
         con.Close();
         return "201";
         
-        //Skills required attribute will be looped thru and added seperately to the skills table
+        
 
            
 
