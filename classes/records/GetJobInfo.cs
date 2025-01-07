@@ -1,4 +1,4 @@
-namespace JobHunt_API
+namespace JobHunt_API.Record
 {
     public record GetJobInfo
     (

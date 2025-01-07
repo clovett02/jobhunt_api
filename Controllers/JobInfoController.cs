@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Localization.Routing;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 using System.Text.Json;
+using JobHunt_API.Record;
 
 namespace JobHunt_API.Controller;
 
@@ -16,7 +17,7 @@ public class JobInfoController : ControllerBase
             password=mchs2009;
             database=jobhunt
         ";
-    static GetJobInfo ReturnJob(MySqlConnection con, string ID)
+    public static GetJobInfo ReturnJob(MySqlConnection con, string ID)
     {
         string sql = $"SELECT * FROM jobs WHERE ID = {ID})";
         using var cmd = new MySqlCommand(sql, con);
@@ -40,7 +41,7 @@ public class JobInfoController : ControllerBase
             );
         return record;
     }
-    static GetJobInfo[] ReturnJobs(MySqlConnection con, string begindate, string enddate)
+    public static GetJobInfo[] ReturnJobs(MySqlConnection con, string begindate, string enddate)
     {
         string sql = $"SELECT * FROM jobs WHERE ApplicationDate >= {begindate} AND ApplicationDate < {enddate})";
         using var cmd = new MySqlCommand(sql, con);
@@ -71,7 +72,7 @@ public class JobInfoController : ControllerBase
         GetJobInfo[] result = records.ToArray();
         return result;
     }
-    static GetJobInfo[] ReturnJobs(MySqlConnection con)
+    public static GetJobInfo[] ReturnJobs(MySqlConnection con)
     {
         string sql = $"SELECT * FROM jobs WHERE ApplicationDate > DATE_SUB(NOW(), INTERVAL 1 YEAR)";
         using var cmd = new MySqlCommand(sql, con);
