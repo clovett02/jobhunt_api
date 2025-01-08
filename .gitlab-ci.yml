@@ -6,6 +6,7 @@ deploy-job:
   environment: production
   script:
     - echo "Deploying application..."
+    - sleep 10
     - ssh -tt chris@thor.docker '
         cd docker_files/APIs/JobHunt_API && 
         git restore . &&
