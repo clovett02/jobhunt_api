@@ -51,7 +51,7 @@ public class JobInfoController : ControllerBase
     }
 
     [EnableCors("MyPolicy")]
-    [HttpGet("/api/jobs/all")]
+    [HttpGet("/api/jobs/pastyear")]
     public string GetJobs()
     {
         GetJobInfo[] jobs = new JobInfo().ReturnJobs();
