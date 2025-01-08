@@ -1,3 +1,6 @@
+using System.Security.Cryptography.X509Certificates;
+using MySql.Data.MySqlClient;
+
 namespace JobHunt_API.Record
 {
     public record GetJobInfo
