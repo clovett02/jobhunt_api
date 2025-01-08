@@ -132,10 +132,10 @@ namespace JobHunt_API
 
         public void InsertJob(PostJobInfo Job)
         {
-            string sql = @"INSERT INTO jobs(CompanyName, JobTitle, CompanyURL, State, City, Remote, Hybrid, Onsite, 
+            string sql = @"INSERT INTO jobs(CompanyName, JobTitle, State, City, Remote, Hybrid, Onsite, 
             ApplicationDate, ApplicationTime) 
             
-            VALUES(@CompanyName, @JobTitle, @CompanyURL, @State, @City, @Remote, @Hybrid, @Onsite, 
+            VALUES(@CompanyName, @JobTitle, @State, @City, @Remote, @Hybrid, @Onsite, 
             @ApplicationDate, @ApplicationTime);";
 
             using MySqlCommand cmd = new MySqlCommand(sql, this.con);
