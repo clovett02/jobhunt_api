@@ -10,7 +10,6 @@ deploy-job:
         cd docker_files/APIs/JobHunt_API && 
         git restore . &&
         git pull &&
-        npm install &&
         docker build -t jobhuntapi . &&
         docker compose down &&
         docker compose up -d'
