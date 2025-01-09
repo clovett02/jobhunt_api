@@ -13,10 +13,10 @@ builder.Services.AddCors(options =>
         
         policy =>
         {
-            policy.WithOrigins("http://thor.jobhunt",
-                                "http://thor.jobhuntapi")
-                        .AllowAnyHeader()
-                        .AllowAnyMethod();
+            policy.WithOrigins("http://thor.jobhunt");
+                                // "http://thor.jobhuntapi");
+                        // .AllowAnyHeader()
+                        // .AllowAnyMethod();
         });
 });
 

@@ -31,33 +31,33 @@ public class JobInfoController : ControllerBase
         cmd.ExecuteNonQuery();
     }*/
 
-    [EnableCors("MyPolicy")]
+    // [EnableCors("MyPolicy")]
     [HttpGet("/api/job/byID/{jobID}")]
     public ActionResult<string> GetJob(string jobID)
     {
         GetJobInfo result = new JobInfo().ReturnJob(jobID);
-        return JsonSerializer.Serialize(result);
+        return Ok(JsonSerializer.Serialize(result));
         
     }
 
-    [EnableCors("MyPolicy")]
     [HttpGet("/api/jobs/bydate/{begindate}/{enddate}")]
     public ActionResult<string> GetJobs(string begindate, string enddate)
     {
         GetJobInfo[] jobs = new JobInfo().ReturnJobs(begindate, enddate);
 
         string result = JsonSerializer.Serialize(jobs);
-        return result;
+        return Ok(result);
     }
 
-    [EnableCors("MyPolicy")]
     [HttpGet("/api/jobs/pastyear")]
     public ActionResult<string> GetJobs()
     {
         GetJobInfo[] jobs = new JobInfo().ReturnJobs();
 
         string result = JsonSerializer.Serialize(jobs);
-        return result;
+
+        // return result;
+        return Ok("Hello World");
     }
 
     [HttpGet("/jobsummary")]
@@ -66,16 +66,16 @@ public class JobInfoController : ControllerBase
         
 
         string result = JsonSerializer.Serialize("");
-        return result;
+        return Ok(result);
     }
 
 
-    [EnableCors("MyPolicy")]
+    // [EnableCors("MyPolicy")]
     [HttpPost("/api/job/addjob")]
     public ActionResult<string> Post([FromBody] PostJobInfo Job)
     {
         new JobInfo().InsertJob(Job);
 
-        return "201";
+        return Ok("201");
     }
 }
