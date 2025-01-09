@@ -6,10 +6,7 @@ namespace JobHunt_API
 {
     public class JobInfo
     {
-        /// <summary>
-        /// Returns data from jobhunt database
-        /// </summary>
-        /// <param name="rdr">Reader for open</param>
+
         
         ///Connection String
         string cs = @"
@@ -19,6 +16,11 @@ namespace JobHunt_API
             database=jobhunt
         ";
         MySqlConnection con;
+        /// <summary>
+        /// Returns data from jobhunt database.
+        /// Opens and closes database connection with constructor and
+        /// destructor.
+        /// </summary>
         public JobInfo()
         {
             this.con = new MySqlConnection(cs);
@@ -110,22 +112,30 @@ namespace JobHunt_API
             string sql = $"SELECT * FROM jobs WHERE ID = {ID};";
             return this.GetJob(sql);
         }
+        ///<summary>
+        ///Returns Jobs applied to within last year
+        ///</summary>
         public GetJobInfo[] ReturnJobs()
         {
-            ///<summary>
-            ///Returns Jobs applied to within last year
-            ///</summary>
+            
 
-            string sql = $"SELECT * FROM jobs WHERE ApplicationDate > DATE_SUB(NOW(), INTERVAL 1 YEAR);";
+            string sql = @"SELECT * FROM jobs 
+                WHERE ApplicationDate > DATE_SUB(NOW(), INTERVAL 1 YEAR);
+                ORDER BY ApplicationDate DESC";
             return this.GetJobs(sql);
         }
+        /// <summary>
+        /// Returns Jobs between begin and end dates
+        /// </summary>
+        /// <param name="begindate">jobs after this date will be included</param>
+        /// <param name="enddate">jobs before, and including this date will be included </param>
+        /// <returns></returns>
         public GetJobInfo[] ReturnJobs(string begindate, string enddate)
         {
             ///<summary>
-            ///Returns Jobs between begin and end dates
+            ///
             ///</summary>
-            /// <param name="begindate">jobs after this date will be included</param>
-            /// <param name="enddate">jobs before, and including this date will be included </param>
+            
 
             return null;
         }
