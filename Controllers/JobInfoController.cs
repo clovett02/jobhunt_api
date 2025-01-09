@@ -33,7 +33,7 @@ public class JobInfoController : ControllerBase
 
     [EnableCors("MyPolicy")]
     [HttpGet("/api/job/byID/{jobID}")]
-    public string GetJob(string jobID)
+    public ActionResult<string> GetJob(string jobID)
     {
         GetJobInfo result = new JobInfo().ReturnJob(jobID);
         return JsonSerializer.Serialize(result);
@@ -42,7 +42,7 @@ public class JobInfoController : ControllerBase
 
     [EnableCors("MyPolicy")]
     [HttpGet("/api/jobs/bydate/{begindate}/{enddate}")]
-    public string GetJobs(string begindate, string enddate)
+    public ActionResult<string> GetJobs(string begindate, string enddate)
     {
         GetJobInfo[] jobs = new JobInfo().ReturnJobs(begindate, enddate);
 
@@ -52,7 +52,7 @@ public class JobInfoController : ControllerBase
 
     [EnableCors("MyPolicy")]
     [HttpGet("/api/jobs/pastyear")]
-    public string GetJobs()
+    public ActionResult<string> GetJobs()
     {
         GetJobInfo[] jobs = new JobInfo().ReturnJobs();
 
@@ -61,7 +61,7 @@ public class JobInfoController : ControllerBase
     }
 
     [HttpGet("/jobsummary")]
-    public string GetJobSummary()
+    public ActionResult<string> GetJobSummary()
     {
         
 
@@ -72,7 +72,7 @@ public class JobInfoController : ControllerBase
 
     [EnableCors("MyPolicy")]
     [HttpPost("/api/job/addjob")]
-    public String Post([FromBody] PostJobInfo Job)
+    public ActionResult<string> Post([FromBody] PostJobInfo Job)
     {
         new JobInfo().InsertJob(Job);
 
