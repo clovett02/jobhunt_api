@@ -120,8 +120,8 @@ namespace JobHunt_API
             
 
             string sql = @"SELECT * FROM jobs 
-                WHERE ApplicationDate > DATE_SUB(NOW(), INTERVAL 1 YEAR);
-                ORDER BY ApplicationDate DESC";
+                WHERE ApplicationDate > DATE_SUB(NOW(), INTERVAL 1 YEAR)
+                ORDER BY ApplicationDate DESC;";
             return this.GetJobs(sql);
         }
         /// <summary>
