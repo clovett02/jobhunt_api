@@ -1,3 +1,5 @@
+using Microsoft.Net.Http.Headers;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -13,10 +15,9 @@ builder.Services.AddCors(options =>
         
         policy =>
         {
-            policy.WithOrigins("http://thor.jobhunt");
-                                // "http://thor.jobhuntapi");
-                        // .AllowAnyHeader()
-                        // .AllowAnyMethod();
+            policy.WithOrigins("http://thor.jobhunt", "http://localhost:5000")
+                        .WithMethods("GET", "POST")
+                        .WithHeaders(HeaderNames.ContentType);
         });
 });
 
