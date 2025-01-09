@@ -56,8 +56,7 @@ public class JobInfoController : ControllerBase
 
         string result = JsonSerializer.Serialize(jobs);
 
-        // return result;
-        return Ok("Hello World");
+        return Ok(result);
     }
 
     [HttpGet("/jobsummary")]
