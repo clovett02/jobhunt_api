@@ -31,7 +31,6 @@ public class JobInfoController : ControllerBase
         cmd.ExecuteNonQuery();
     }*/
 
-    // [EnableCors("MyPolicy")]
     [HttpGet("/api/job/byID/{jobID}")]
     public ActionResult<string> GetJob(string jobID)
     {
@@ -69,7 +68,6 @@ public class JobInfoController : ControllerBase
     }
 
 
-    // [EnableCors("MyPolicy")]
     [HttpPost("/api/job/addjob")]
     public ActionResult<string> Post([FromBody] PostJobInfo Job)
     {
