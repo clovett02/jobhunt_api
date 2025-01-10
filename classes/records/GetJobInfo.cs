@@ -7,6 +7,7 @@ namespace JobHunt_API.Record
     (
         string JobID,
         string CompanyName,
+        string CompanyURL,
         string JobTitle,
         string JobDescription,
         string State, 
@@ -14,11 +15,14 @@ namespace JobHunt_API.Record
         bool Remote,
         bool Hybrid,
         bool Onsite,
+        DateTime DatePosted,
         DateTime ApplicationDate,
         DateTime ApplicationTime,
         bool Responded,
         DateTime ResponseDate,
         DateTime ResponseTime,
-        bool Denied
+        bool Denied,
+        bool EasyApply,
+        string SiteFoundOn
     );
 }

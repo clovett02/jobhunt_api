@@ -27,7 +27,7 @@ namespace JobHunt_API
             this.con.Open();
         }
 
-        public static string SafeGetString(MySqlDataReader rdr, string columnname, int columnindex)
+        private static string SafeGetString(MySqlDataReader rdr, string columnname, int columnindex)
         {
             if(!rdr.IsDBNull(columnindex))
             {
@@ -36,7 +36,15 @@ namespace JobHunt_API
                 
             return string.Empty;
         }
-        public static bool SafeGetBoolean(MySqlDataReader rdr, string columnname, int columnindex)
+        /// <summary>
+        /// Safely returns boolean value if the value in the DB is not null.
+        /// If the DB value is null, this will return false.
+        /// </summary>
+        /// <param name="rdr"></param>
+        /// <param name="columnname"></param>
+        /// <param name="columnindex"></param>
+        /// <returns></returns>
+        private static bool SafeGetBoolean(MySqlDataReader rdr, string columnname, int columnindex)
         {
             if(!rdr.IsDBNull(columnindex))
             {
@@ -44,7 +52,7 @@ namespace JobHunt_API
             }
             return false;
         }
-        public static DateTime SafeGetDate(MySqlDataReader rdr, string columnname, int columnindex)
+        private static DateTime SafeGetDate(MySqlDataReader rdr, string columnname, int columnindex)
         {
             if(!rdr.IsDBNull(columnindex))
             {
@@ -52,30 +60,43 @@ namespace JobHunt_API
             }
             return DateTime.MinValue;
         }
-    
+        /// <summary>
+        /// Returns a GetJobInfo record with date loaded from the 
+        /// 'MySqlDataReader' object.
+        /// </summary>
+        /// <param name="rdr">MySqlDataReader object to load data from</param>
+        /// <returns></returns>
+        private static GetJobInfo LoadInfo(MySqlDataReader rdr)
+        {
+            return new GetJobInfo(
+                    JobID: SafeGetString(rdr, "ID", 0),
+                    CompanyName: SafeGetString(rdr, "CompanyName", 1),
+                    CompanyURL: SafeGetString(rdr, "CompanyURL", 2),
+                    JobTitle: SafeGetString(rdr, "JobTitle", 3),
+                    JobDescription: SafeGetString(rdr, "JobDescription", 4),
+                    State: SafeGetString(rdr, "State", 5),
+                    City: SafeGetString(rdr, "City", 6),
+                    Remote:SafeGetBoolean(rdr, "Remote", 7),
+                    Hybrid: SafeGetBoolean(rdr, "Hybrid", 8),
+                    Onsite: SafeGetBoolean(rdr, "Onsite", 9),
+                    DatePosted: SafeGetDate(rdr, "DatePosted", 10),
+                    ApplicationDate: SafeGetDate(rdr, "ApplicationDate", 11),
+                    ApplicationTime: SafeGetDate(rdr, "ApplicationTime", 12),
+                    Responded: SafeGetBoolean(rdr, "Responded", 13),
+                    ResponseDate: SafeGetDate(rdr, "ResponseDate", 14),
+                    ResponseTime: SafeGetDate(rdr, "ResponseTime", 15),
+                    Denied: SafeGetBoolean(rdr,"Denied", 16),
+                    EasyApply: SafeGetBoolean(rdr, "EasyApply", 17),
+                    SiteFoundOn: SafeGetString(rdr, "SiteFoundOn", 18)
+                    );
+        }
         private GetJobInfo GetJob(string sql)
         {
             using var cmd = new MySqlCommand(sql, this.con);
             using MySqlDataReader rdr = cmd.ExecuteReader();
             while(rdr.Read())
             {
-                return new GetJobInfo(
-                    JobID: rdr.GetString("ID"),
-                    CompanyName: rdr.GetString("CompanyName"),
-                    JobTitle: rdr.GetString("JobTitle"),
-                    JobDescription: SafeGetString(rdr, "JobDescription", 4),
-                    State: rdr.GetString("State"),
-                    City:rdr.GetString("City"),
-                    Remote:rdr.GetBoolean("Remote"),
-                    Hybrid:rdr.GetBoolean("Hybrid"),
-                    Onsite:rdr.GetBoolean("Onsite"),
-                    ApplicationDate: rdr.GetDateTime("ApplicationDate"),
-                    ApplicationTime: rdr.GetDateTime("ApplicationTime"),
-                    Responded: SafeGetBoolean(rdr, "Responded", 12),
-                    ResponseDate: SafeGetDate(rdr, "ResponseDate", 13),
-                    ResponseTime: SafeGetDate(rdr, "ResponseTime", 15),
-                    Denied: SafeGetBoolean(rdr,"Denied", 16)
-                    );
+                return LoadInfo(rdr);
             }
             return null;
         }
@@ -86,23 +107,7 @@ namespace JobHunt_API
             List<GetJobInfo> records = new List<GetJobInfo>();
             while(rdr.Read())
             {
-                records.Add(new GetJobInfo(
-                    JobID: rdr.GetString("ID"),
-                    CompanyName: rdr.GetString("CompanyName"),
-                    JobTitle: rdr.GetString("JobTitle"),
-                    JobDescription: SafeGetString(rdr, "JobDescription", 4),
-                    State: rdr.GetString("State"),
-                    City:rdr.GetString("City"),
-                    Remote:rdr.GetBoolean("Remote"),
-                    Hybrid:rdr.GetBoolean("Hybrid"),
-                    Onsite:rdr.GetBoolean("Onsite"),
-                    ApplicationDate: rdr.GetDateTime("ApplicationDate"),
-                    ApplicationTime: rdr.GetDateTime("ApplicationTime"),
-                    Responded: SafeGetBoolean(rdr, "Responded", 12),
-                    ResponseDate: SafeGetDate(rdr, "ResponseDate", 13),
-                    ResponseTime: SafeGetDate(rdr, "ResponseTime", 15),
-                    Denied: SafeGetBoolean(rdr,"Denied", 16)
-                    ));
+                records.Add(LoadInfo(rdr));
             }
             GetJobInfo[] result = records.ToArray();
             return result;
@@ -125,18 +130,14 @@ namespace JobHunt_API
             return this.GetJobs(sql);
         }
         /// <summary>
-        /// Returns Jobs between begin and end dates
+        /// Returns Jobs after 'begindate' and before, and including the 'enddate'.
         /// </summary>
         /// <param name="begindate">jobs after this date will be included</param>
         /// <param name="enddate">jobs before, and including this date will be included </param>
         /// <returns></returns>
         public GetJobInfo[] ReturnJobs(string begindate, string enddate)
-        {
-            ///<summary>
-            ///
-            ///</summary>
+        {   
             
-
             return null;
         }
 
