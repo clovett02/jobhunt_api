@@ -52,13 +52,21 @@ namespace JobHunt_API
             }
             return false;
         }
-        private static DateTime SafeGetDate(MySqlDataReader rdr, string columnname, int columnindex)
+        private static DateOnly SafeGetDate(MySqlDataReader rdr, string columnname, int columnindex)
         {
             if(!rdr.IsDBNull(columnindex))
             {
-                return rdr.GetDateTime(columnname);
+                return DateOnly.FromDateTime(rdr.GetDateTime(columnname)) ;
             }
-            return DateTime.MinValue;
+            return DateOnly.MinValue;
+        }
+        private static TimeOnly SafeGetTime(MySqlDataReader rdr, string columnname, int columnindex)
+        {
+            if(!rdr.IsDBNull(columnindex))
+            {
+                return TimeOnly.FromDateTime(rdr.GetDateTime(columnname));
+            }
+            return TimeOnly.MinValue;
         }
         /// <summary>
         /// Returns a GetJobInfo record with date loaded from the 
@@ -81,10 +89,10 @@ namespace JobHunt_API
                     Onsite: SafeGetBoolean(rdr, "Onsite", 9),
                     DatePosted: SafeGetDate(rdr, "DatePosted", 10),
                     ApplicationDate: SafeGetDate(rdr, "ApplicationDate", 11),
-                    ApplicationTime: SafeGetDate(rdr, "ApplicationTime", 12),
+                    ApplicationTime: SafeGetTime(rdr, "ApplicationTime", 12),
                     Responded: SafeGetBoolean(rdr, "Responded", 13),
                     ResponseDate: SafeGetDate(rdr, "ResponseDate", 14),
-                    ResponseTime: SafeGetDate(rdr, "ResponseTime", 15),
+                    ResponseTime: SafeGetTime(rdr, "ResponseTime", 15),
                     Denied: SafeGetBoolean(rdr,"Denied", 16),
                     EasyApply: SafeGetBoolean(rdr, "EasyApply", 17),
                     SiteFoundOn: SafeGetString(rdr, "SiteFoundOn", 18)
