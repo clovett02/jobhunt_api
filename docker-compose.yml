@@ -9,7 +9,7 @@ services:
     ports:
       - "5000"
     restart:
-      - unless-stopped
+      - "unless-stopped"
 #    volumes:
 #      - /etc/letsencrypt:/etc/letsencrypt
 
@@ -28,7 +28,7 @@ services:
       - "80:80"
 #      - "443:443"
     restart:
-      - unless-stopped
+      - "unless-stopped"
 
 networks:
   MyDockerNetwork:
