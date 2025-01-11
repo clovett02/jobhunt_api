@@ -18,9 +18,11 @@ namespace JobHunt_API.Record
         DateOnly DatePosted,
         DateOnly ApplicationDate,
         TimeOnly ApplicationTime,
+        String ApplicationDay,
         bool Responded,
         DateOnly ResponseDate,
         TimeOnly ResponseTime,
+        String ResponseDay,
         bool Denied,
         bool EasyApply,
         string SiteFoundOn

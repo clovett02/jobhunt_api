@@ -90,12 +90,14 @@ namespace JobHunt_API
                     DatePosted: SafeGetDate(rdr, "DatePosted", 10),
                     ApplicationDate: SafeGetDate(rdr, "ApplicationDate", 11),
                     ApplicationTime: SafeGetTime(rdr, "ApplicationTime", 12),
-                    Responded: SafeGetBoolean(rdr, "Responded", 13),
-                    ResponseDate: SafeGetDate(rdr, "ResponseDate", 14),
-                    ResponseTime: SafeGetTime(rdr, "ResponseTime", 15),
-                    Denied: SafeGetBoolean(rdr,"Denied", 16),
-                    EasyApply: SafeGetBoolean(rdr, "EasyApply", 17),
-                    SiteFoundOn: SafeGetString(rdr, "SiteFoundOn", 18)
+                    ApplicationDay: SafeGetString(rdr, "ApplicationDay", 13),
+                    Responded: SafeGetBoolean(rdr, "Responded", 14),
+                    ResponseDate: SafeGetDate(rdr, "ResponseDate", 15),
+                    ResponseTime: SafeGetTime(rdr, "ResponseTime", 16),
+                    ResponseDay: SafeGetString(rdr, "ResponseDay", 17),
+                    Denied: SafeGetBoolean(rdr,"Denied", 18),
+                    EasyApply: SafeGetBoolean(rdr, "EasyApply", 19),
+                    SiteFoundOn: SafeGetString(rdr, "SiteFoundOn", 20)
                     );
         }
         private GetJobInfo GetJob(string sql)
@@ -182,3 +184,4 @@ namespace JobHunt_API
 
     }
 }
+
