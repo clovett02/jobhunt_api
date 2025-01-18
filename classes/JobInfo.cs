@@ -11,8 +11,8 @@ namespace JobHunt_API
         ///Connection String
         string cs = @"
             server=thor.mysql;
-            userid=root;
-            password=mchs2009;
+            userid=jobhuntapi;
+            password=12191990;
             database=jobhunt
         ";
         MySqlConnection con;
