@@ -1,17 +1,27 @@
 stages:
+  - build
   - deploy
+
+build-job:
+  stage: build
+  tags:
+    - docker
+  image: docker:latest
+  services:
+    - name: docker:dind
+      command: ['--insecure-registry=thor.docker.registry:5000']
+  before_script: 
+    - docker info
+  script:
+    - docker build -t thor.docker.registry:5000/jobhuntapi .
+    - docker push thor.docker.registry:5000/jobhuntapi
 
 deploy-job:
   stage: deploy
   environment: production
   script:
     - echo "Deploying application..."
-    - sleep 10
     - ssh -tt chris@thor.docker '
-        cd docker_files/APIs/JobHunt_API && 
-        git restore . &&
-        git pull &&
-        docker build -t jobhuntapi . &&
-        docker compose down &&
-        docker compose up -d'
+      docker pull thor.docker.registry:5000/jobhuntapi &&
+      docker compose -f ~/docker_files/compose_files/jobhunt/docker-compose.yml up -d'
     - echo "Application successfully deployed."
