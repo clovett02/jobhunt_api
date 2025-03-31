@@ -12,25 +12,6 @@ namespace JobHunt_API.Controller;
 [ApiController]
 public class JobInfoController : ControllerBase
 {
-    /*public static void InsertSkills(MySqlConnection con, PostJobSkills Job)
-    {
-        //Skills required attribute will be looped thru and added seperately to the skills table
-        string sql = $"INSERT IGNORE INTO skills(Name) VALUES(@Name{0})";
-        for (int i = 1; i < Job.SkillsRequired.Count; i++)
-        {
-            sql+= $", (@Name{i})";
-        }
-
-        using var cmd = new MySqlCommand(sql, con);
-
-        for (int i = 0; i < Job.SkillsRequired.Count; i++)
-        {
-            cmd.Parameters.AddWithValue($"@Name{i}", Job.SkillsRequired[i]); 
-        }
-        cmd.Prepare();
-        cmd.ExecuteNonQuery();
-    }*/
-
     [HttpGet("/api/job/byID/{jobID}")]
     public ActionResult<string> GetJob(string jobID)
     {
@@ -69,7 +50,7 @@ public class JobInfoController : ControllerBase
 
 
     [HttpPost("/api/job/addjob")]
-    public ActionResult<string> Post([FromBody] PostJobInfo Job)
+    public ActionResult<string> AddJob([FromBody] PostJobInfo Job)
     {
         new JobInfo().InsertJob(Job);
 
