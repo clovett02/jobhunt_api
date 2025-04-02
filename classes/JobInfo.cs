@@ -194,7 +194,7 @@ namespace JobHunt_API
             this.con.Close();
         }
 
-        public void UpdateLocation(string ID, string state, string city)
+        public void UpdateLocation(string ID, string city, string state)
         {
             string sql = @$"UPDATE `jobhunt`.`jobs` SET `State` = '{state}', `City` = '{city}'
                         WHERE (`ID` = '{ID}')";
