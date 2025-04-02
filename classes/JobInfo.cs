@@ -194,6 +194,17 @@ namespace JobHunt_API
             this.con.Close();
         }
 
+        public void UpdateLocation(string ID, string state, string city)
+        {
+            string sql = @$"UPDATE `jobhunt`.`jobs` SET `State` = '{state}', `City` = '{city}'
+                        WHERE (`ID` = '{ID}')";
+            
+            using MySqlCommand cmd = new MySqlCommand(sql, this.con);
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
+            this.con.Close();
+        }
+
         ~JobInfo()
         {
             this.con.Close();
