@@ -177,6 +177,16 @@ namespace JobHunt_API
             cmd.ExecuteNonQuery();
         }
 
+        public void UpdateJobDescription(string ID, string description)
+        {
+            string sql = @$"UPDATE `jobhunt`.`jobs` SET `JobDescription` = '{description}'
+                        WHERE (`ID` = '{ID}')";
+            
+            using MySqlCommand cmd = new MySqlCommand(sql, this.con);
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
+        }
+
         ~JobInfo()
         {
             this.con.Close();

@@ -56,4 +56,11 @@ public class JobInfoController : ControllerBase
 
         return Ok("201");
     }
+
+    [HttpPost("/api/job/updatedescription")]
+    public ActionResult<string> UpdateJobDescription([FromBody] UpdateJobDescription job)
+    {
+        new JobInfo().UpdateJobDescription(job.ID, job.JobDescription);
+        return Ok("201");
+    }
 }
