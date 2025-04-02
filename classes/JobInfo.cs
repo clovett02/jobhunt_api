@@ -108,6 +108,7 @@ namespace JobHunt_API
             {
                 return LoadInfo(rdr);
             }
+            rdr.Close();
             return null;
         }
         private GetJobInfo[] GetJobs(string sql)
@@ -120,6 +121,7 @@ namespace JobHunt_API
                 records.Add(LoadInfo(rdr));
             }
             GetJobInfo[] result = records.ToArray();
+            rdr.Close();
             return result;
         }
         public GetJobInfo ReturnJob(string ID)
