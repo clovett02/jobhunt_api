@@ -104,12 +104,14 @@ namespace JobHunt_API
         {
             using var cmd = new MySqlCommand(sql, this.con);
             using MySqlDataReader rdr = cmd.ExecuteReader();
+            GetJobInfo result = null;
             while(rdr.Read())
             {
-                return LoadInfo(rdr);
+                result = LoadInfo(rdr);
             }
             rdr.Close();
-            return null;
+            this.con.Close();
+            return result;
         }
         private GetJobInfo[] GetJobs(string sql)
         {
@@ -122,6 +124,7 @@ namespace JobHunt_API
             }
             GetJobInfo[] result = records.ToArray();
             rdr.Close();
+            this.con.Close();
             return result;
         }
         public GetJobInfo ReturnJob(string ID)
@@ -177,6 +180,7 @@ namespace JobHunt_API
 
             cmd.Prepare();
             cmd.ExecuteNonQuery();
+            this.con.Close();
         }
 
         public void UpdateJobDescription(string ID, string description)
@@ -187,6 +191,7 @@ namespace JobHunt_API
             using MySqlCommand cmd = new MySqlCommand(sql, this.con);
             cmd.Prepare();
             cmd.ExecuteNonQuery();
+            this.con.Close();
         }
 
         ~JobInfo()
