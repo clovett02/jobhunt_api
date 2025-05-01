@@ -1,11 +1,7 @@
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Localization.Routing;
+
 using Microsoft.AspNetCore.Mvc;
-using MySql.Data.MySqlClient;
 using System.Text.Json;
 using JobHunt_API.Record;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
 
 namespace JobHunt_API.Controller;
 
