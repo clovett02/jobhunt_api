@@ -65,4 +65,22 @@ public class JobInfoController : ControllerBase
         new JobInfo().UpdateLocation(job.ID, job.City, job.State);
         return Ok("201");
     }
+    [HttpPost("/api/job/updateremotehybridonsite")]
+    public ActionResult<string> UpdateRemoteHybridOnsite([FromBody] UpdateRemoteHybridOnsite job)
+    {
+        new JobInfo().UpdateRemoteHybridOnsite(job.ID, job.Remote, job.Hybrid, job.Onsite);
+        return Ok("201");
+    }
+    [HttpPost("/api/job/updateresponded")]
+    public ActionResult<string> UpdateResponded([FromBody] UpdateResponded job)
+    {
+        new JobInfo().UpdateResponded(job.ID, job.Responded);
+        return Ok("201");
+    }
+    [HttpPost("/api/job/updatesitefoundon")]
+    public ActionResult<string> UpdateSiteFoundOn([FromBody] UpdateSiteFoundOn job)
+    {
+        new JobInfo().UpdateSiteFoundOn(job.ID, job.SiteFoundOn);
+        return Ok("201");
+    }
 }

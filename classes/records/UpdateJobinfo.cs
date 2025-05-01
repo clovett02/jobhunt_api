@@ -23,4 +23,9 @@ namespace JobHunt_API
         string ID,
         bool Responded
     );
+    public record UpdateSiteFoundOn
+    (
+        string ID,
+        string SiteFoundOn
+    );
 }

@@ -26,7 +26,13 @@ namespace JobHunt_API
             this.con = new MySqlConnection(cs);
             this.con.Open();
         }
-
+        private void ExecuteSQL(string sql)
+        {
+            using MySqlCommand cmd = new MySqlCommand(sql, this.con);
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
+            this.con.Close();
+        }
         private static string SafeGetString(MySqlDataReader rdr, string columnname, int columnindex)
         {
             if(!rdr.IsDBNull(columnindex))
@@ -188,10 +194,7 @@ namespace JobHunt_API
             string sql = @$"UPDATE `jobhunt`.`jobs` SET `JobDescription` = '{description}'
                         WHERE (`ID` = '{ID}')";
             
-            using MySqlCommand cmd = new MySqlCommand(sql, this.con);
-            cmd.Prepare();
-            cmd.ExecuteNonQuery();
-            this.con.Close();
+            this.ExecuteSQL(sql);
         }
 
         public void UpdateLocation(string ID, string city, string state)
@@ -199,10 +202,35 @@ namespace JobHunt_API
             string sql = @$"UPDATE `jobhunt`.`jobs` SET `State` = '{state}', `City` = '{city}'
                         WHERE (`ID` = '{ID}')";
             
-            using MySqlCommand cmd = new MySqlCommand(sql, this.con);
-            cmd.Prepare();
-            cmd.ExecuteNonQuery();
-            this.con.Close();
+            this.ExecuteSQL(sql);
+        }
+
+        public void UpdateRemoteHybridOnsite(string ID, bool remote, bool hybrid, bool onsite)
+        {
+            string sql = @$"UPDATE `jobhunt`.`jobs`
+                            SET 
+                            `Remote` = `{remote}`,
+                            `Hybrid` = `{hybrid}`,
+                            `Onsite` = `{onsite}`
+                            WHERE (`ID` = `{ID}`)";
+
+            this.ExecuteSQL(sql);
+        }
+
+        public void UpdateResponded(string ID, bool responded)
+        {
+            string sql = @$"UPDATE `jobhunt`.`jobs` SET `Responded` = `{responded}`
+                        WHERE (`ID` = '{ID}')";
+
+            this.ExecuteSQL(sql);
+        }
+
+        public void UpdateSiteFoundOn(string ID, string SiteFoundOn)
+        {
+            string sql = @$"UPDATE `jobhunt`.`jobs` SET `SiteFoundOn` = `{SiteFoundOn}`
+                    WHERE (`ID` = `{ID}`)";
+
+            this.ExecuteSQL(sql);
         }
 
         ~JobInfo()
