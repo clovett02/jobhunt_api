@@ -209,17 +209,17 @@ namespace JobHunt_API
         {
             string sql = @$"UPDATE `jobhunt`.`jobs`
                             SET 
-                            `Remote` = `{remote}`,
-                            `Hybrid` = `{hybrid}`,
-                            `Onsite` = `{onsite}`
-                            WHERE (`ID` = `{ID}`)";
+                            `Remote` = '{remote}',
+                            `Hybrid` = '{hybrid}',
+                            `Onsite` = '{onsite}'
+                            WHERE (`ID` = '{ID}')";
 
             this.ExecuteSQL(sql);
         }
 
         public void UpdateResponded(string ID, bool responded)
         {
-            string sql = @$"UPDATE `jobhunt`.`jobs` SET `Responded` = `{responded}`
+            string sql = @$"UPDATE `jobhunt`.`jobs` SET `Responded` = '{responded}'
                         WHERE (`ID` = '{ID}')";
 
             this.ExecuteSQL(sql);
@@ -227,8 +227,9 @@ namespace JobHunt_API
 
         public void UpdateSiteFoundOn(string ID, string SiteFoundOn)
         {
-            string sql = @$"UPDATE `jobhunt`.`jobs` SET `SiteFoundOn` = `{SiteFoundOn}`
-                    WHERE (`ID` = `{ID}`)";
+            string sql = @$"UPDATE `jobhunt`.`jobs` SET `SiteFoundOn` = '{SiteFoundOn}'
+                    WHERE (`ID` = '{ID}')";
+"
 
             this.ExecuteSQL(sql);
         }
