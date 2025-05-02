@@ -229,7 +229,6 @@ namespace JobHunt_API
         {
             string sql = @$"UPDATE `jobhunt`.`jobs` SET `SiteFoundOn` = '{SiteFoundOn}'
                     WHERE (`ID` = '{ID}')";
-"
 
             this.ExecuteSQL(sql);
         }
