@@ -77,6 +77,12 @@ public class JobInfoController : ControllerBase
         return Ok(result);
     }
 
+    /// <summary>
+    /// *Unfinished. Will return a summary of jobs replied to
+    /// in the past 14 Days. May use a different class/dto with
+    /// properties for different data points.
+    /// </summary>
+    /// <returns></returns>
     [HttpGet("/jobsummary")]
     public ActionResult<string> GetJobSummary()
     {
