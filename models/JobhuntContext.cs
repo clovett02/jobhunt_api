@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using Microsoft.EntityFrameworkCore;
 
 namespace JobHunt_API.models;

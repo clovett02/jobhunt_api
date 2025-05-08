@@ -3,10 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using JobHunt_API.Record;
 using JobHunt_API.models;
-using Microsoft.EntityFrameworkCore;
+using JobHunt_API.DTOs;
 using System.Threading.Tasks;
-using MySqlX.XDevAPI.Common;
-
 namespace JobHunt_API.Controller;
 
 [ApiController]
@@ -15,11 +13,10 @@ public class JobInfoController : ControllerBase
     [HttpGet("/api/job/byID/{jobID}")]
     public async Task<ActionResult<string>> GetJob(int jobID)
     {
-        Job result;
+        JobDTO result;
         using (JobhuntContext db = new JobhuntContext()){
-            result = await db.Jobs.FindAsync(jobID);
+            result = new JobDTO(await db.Jobs.FindAsync(jobID));
         }
-        // GetJobInfo result = new JobInfo().ReturnJob(jobID);
         return Ok(JsonSerializer.Serialize(result));
         
     }
@@ -32,12 +29,13 @@ public class JobInfoController : ControllerBase
             db.Jobs.Remove(j);
             await db.SaveChangesAsync();
         }
-        return Ok("200");
+        return Ok("202");
     }
     
     [HttpPost("/api/job/addjob")]
-    public async Task<ActionResult<string>> AddJob([FromBody] Job job)
+    public async Task<ActionResult<string>> AddJob([FromBody] JobDTO dto)
     {
+        Job job = dto.ReturnJobContextJob();
         using(JobhuntContext db = new JobhuntContext()){
             db.Add(job);
             await db.SaveChangesAsync();
@@ -47,32 +45,35 @@ public class JobInfoController : ControllerBase
     }
 
     [HttpGet("/api/jobs/bydate/{begindate}/{enddate}")]
-    public ActionResult<string> GetJobs(string begindate, string enddate)
+    public ActionResult<string> GetJobs(DateTime begindate, DateTime enddate)
     {
-        // using (JobhuntContext db = new JobhuntContext()){
-        //     Job[] result1 = db.Jobs.FromSql<string>("");
-        // }
+        Job[] result;
+        using (JobhuntContext db = new JobhuntContext()){
+            result = db.Jobs
+                .Where(j => j.ApplicationDate > begindate && j.ApplicationDate < enddate).ToArray();
+        }
 
-        GetJobInfo[] jobs = new JobInfo().ReturnJobs(begindate, enddate);
-
-        string result = JsonSerializer.Serialize(jobs);
         return Ok(result);
     }
 
     [HttpGet("/api/jobs/pastyear")]
     public ActionResult<string> GetJobs()
     {
-        Job[] result;
+        Job[] jobs;
+        
         using (JobhuntContext db = new JobhuntContext()){
             DateTime yearago = DateTime.Now.AddYears(-1);
-            result = db.Jobs
+            jobs = db.Jobs
             .Where(j => j.ApplicationDate > yearago)
             .OrderByDescending(j => j.ApplicationDate).ToArray();
         }
+        
+        JobDTO[] result = new JobDTO[jobs.Length];
 
-        // GetJobInfo[] jobs = new JobInfo().ReturnJobs();
-
-        // string result = JsonSerializer.Serialize(jobs);
+        for (int i = 0; i < jobs.Length; i++)
+        {
+            result[i] = new JobDTO(jobs[i]);
+        }
         
         return Ok(result);
     }
@@ -92,7 +93,16 @@ public class JobInfoController : ControllerBase
         return Ok(result);
     }
 
+    [HttpPut("/api/job/update")]
+    public async Task<ActionResult<string>> UpdateJob([FromBody] JobDTO dto)
+    {
+        using (JobhuntContext db = new JobhuntContext()){
+            db.Jobs.Update(dto.ReturnJobContextJob());
+            await db.SaveChangesAsync();
+        }
 
+        return Ok("202");
+    }
 
 
     [HttpPost("/api/job/updatedescription")]
