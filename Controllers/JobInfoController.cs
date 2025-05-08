@@ -65,7 +65,9 @@ public class JobInfoController : ControllerBase
         Job[] result;
         using (JobhuntContext db = new JobhuntContext()){
             DateTime yearago = DateTime.Now.AddYears(-1);
-            result = db.Jobs.Where(j => j.ApplicationDate > yearago).ToArray();
+            result = db.Jobs
+            .Where(j => j.ApplicationDate > yearago)
+            .OrderByDescending(j => j.ApplicationDate).ToArray();
         }
 
         // GetJobInfo[] jobs = new JobInfo().ReturnJobs();
