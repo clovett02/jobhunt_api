@@ -35,7 +35,7 @@ var app = builder.Build();
     app.UseSwaggerUI();
 }*/
 
-app.UseRouting();
+// app.UseRouting();
 
 app.UseCors();
 
