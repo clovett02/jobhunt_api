@@ -53,7 +53,7 @@ public class JobInfoController : ControllerBase
                 .Where(j => j.ApplicationDate > begindate && j.ApplicationDate < enddate).ToArray();
         }
 
-        return Ok(result);
+        return Ok(JsonSerializer.Serialize(result));
     }
 
     [HttpGet("/api/jobs/pastyear")]
@@ -75,7 +75,7 @@ public class JobInfoController : ControllerBase
             result[i] = new JobDTO(jobs[i]);
         }
         
-        return Ok(result);
+        return Ok(JsonSerializer.Serialize(result));
     }
 
     /// <summary>
