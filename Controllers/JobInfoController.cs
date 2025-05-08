@@ -31,8 +31,9 @@ public class JobInfoController : ControllerBase
     }
     
     [HttpPost("/api/job/addjob")]
-    public async Task<ActionResult<string>> AddJob([FromBody] JobDTO dto)
+    public async Task<ActionResult<string>> AddJob([FromBody] string incomingdto)
     {
+        JobDTO dto = JsonSerializer.Deserialize<JobDTO>(incomingdto);
         Job job = dto.ReturnJobContextJob();
         using(JobhuntContext db = new JobhuntContext()){
             db.Add(job);
@@ -92,8 +93,9 @@ public class JobInfoController : ControllerBase
     }
 
     [HttpPut("/api/job/update")]
-    public async Task<ActionResult<string>> UpdateJob([FromBody] JobDTO dto)
+    public async Task<ActionResult<string>> UpdateJob([FromBody] string incomingdto)
     {
+        JobDTO dto = JsonSerializer.Deserialize<JobDTO>(incomingdto);
         using (JobhuntContext db = new JobhuntContext()){
             db.Jobs.Update(dto.ReturnJobContextJob());
             await db.SaveChangesAsync();
