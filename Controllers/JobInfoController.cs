@@ -1,10 +1,8 @@
 
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
-using JobHunt_API.Record;
 using JobHunt_API.models;
 using JobHunt_API.DTOs;
-using System.Threading.Tasks;
 namespace JobHunt_API.Controller;
 
 [ApiController]
