@@ -1,6 +1,7 @@
 using JobHunt_API.Record;
+using Microsoft.EntityFrameworkCore;
 using MySql.Data.MySqlClient;
-using MySqlX.XDevAPI.Common;
+using JobHunt_API.models;
 
 namespace JobHunt_API
 {
@@ -136,6 +137,7 @@ namespace JobHunt_API
         public GetJobInfo ReturnJob(string ID)
         {
             string sql = $"SELECT * FROM jobs WHERE ID = {ID};";
+            
             return this.GetJob(sql);
         }
         ///<summary>
@@ -162,31 +164,36 @@ namespace JobHunt_API
             return null;
         }
 
-        public void InsertJob(PostJobInfo Job)
+        public void InsertJob(Job job)
         {
-            string sql = @"INSERT INTO jobs(CompanyName, JobTitle, State, City, Remote, Hybrid, Onsite, 
-            ApplicationDate, ApplicationTime) 
+            using(JobhuntContext db = new JobhuntContext())
+            {
+                db.Jobs.Add(job);
+            }
+
+        //     string sql = @"INSERT INTO jobs(CompanyName, JobTitle, State, City, Remote, Hybrid, Onsite, 
+        //     ApplicationDate, ApplicationTime) 
             
-            VALUES(@CompanyName, @JobTitle, @State, @City, @Remote, @Hybrid, @Onsite, 
-            @ApplicationDate, @ApplicationTime);";
+        //     VALUES(@CompanyName, @JobTitle, @State, @City, @Remote, @Hybrid, @Onsite, 
+        //     @ApplicationDate, @ApplicationTime);";
 
-            using MySqlCommand cmd = new MySqlCommand(sql, this.con);
+        //     using MySqlCommand cmd = new MySqlCommand(sql, this.con);
 
-            cmd.Parameters.AddWithValue("@CompanyName", Job.CompanyName);
-            cmd.Parameters.AddWithValue("@JobTitle", Job.JobTitle);
-            cmd.Parameters.AddWithValue("@JobDescription", Job.JobDescription);
-            cmd.Parameters.AddWithValue("@URL", Job.JobDescription);
-            cmd.Parameters.AddWithValue("@State", Job.State);
-            cmd.Parameters.AddWithValue("@City", Job.City);
-            cmd.Parameters.AddWithValue("@Remote", Job.Remote);
-            cmd.Parameters.AddWithValue("@Hybrid", Job.Hybrid);
-            cmd.Parameters.AddWithValue("@Onsite", Job.Onsite);
-            cmd.Parameters.AddWithValue("@ApplicationDate", Job.ApplicationDate);
-            cmd.Parameters.AddWithValue("@ApplicationTime", Job.ApplicationTime);
+        //     cmd.Parameters.AddWithValue("@CompanyName", Job.CompanyName);
+        //     cmd.Parameters.AddWithValue("@JobTitle", Job.JobTitle);
+        //     cmd.Parameters.AddWithValue("@JobDescription", Job.JobDescription);
+        //     cmd.Parameters.AddWithValue("@URL", Job.JobDescription);
+        //     cmd.Parameters.AddWithValue("@State", Job.State);
+        //     cmd.Parameters.AddWithValue("@City", Job.City);
+        //     cmd.Parameters.AddWithValue("@Remote", Job.Remote);
+        //     cmd.Parameters.AddWithValue("@Hybrid", Job.Hybrid);
+        //     cmd.Parameters.AddWithValue("@Onsite", Job.Onsite);
+        //     cmd.Parameters.AddWithValue("@ApplicationDate", Job.ApplicationDate);
+        //     cmd.Parameters.AddWithValue("@ApplicationTime", Job.ApplicationTime);
 
-            cmd.Prepare();
-            cmd.ExecuteNonQuery();
-            this.con.Close();
+        //     cmd.Prepare();
+        //     cmd.ExecuteNonQuery();
+        //     this.con.Close();
         }
 
         public void UpdateJobDescription(string ID, string description)

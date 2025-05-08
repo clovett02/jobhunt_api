@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using JobHunt_API.Record;
+using JobHunt_API.models;
+using Microsoft.EntityFrameworkCore;
 
 namespace JobHunt_API.Controller;
 
@@ -9,16 +11,46 @@ namespace JobHunt_API.Controller;
 public class JobInfoController : ControllerBase
 {
     [HttpGet("/api/job/byID/{jobID}")]
-    public ActionResult<string> GetJob(string jobID)
+    public ActionResult<string> GetJob(int jobID)
     {
-        GetJobInfo result = new JobInfo().ReturnJob(jobID);
+        Job result;
+        using (JobhuntContext db = new JobhuntContext()){
+            result = db.Jobs.Find(jobID);
+        }
+        // GetJobInfo result = new JobInfo().ReturnJob(jobID);
         return Ok(JsonSerializer.Serialize(result));
         
+    }
+
+    [HttpDelete("/api/job/byID/{jobid}")]
+    public ActionResult<string> DeleteJob(int jobid)
+    {
+        using(JobhuntContext db = new JobhuntContext()){
+            Job j = db.Jobs.Find(jobid);
+            db.Jobs.Remove(j);
+            db.SaveChanges();
+        }
+        return Ok("200");
+    }
+    
+    [HttpPost("/api/job/addjob")]
+    public ActionResult<string> AddJob([FromBody] Job job)
+    {
+        using(JobhuntContext db = new JobhuntContext()){
+            db.Add(job);
+            db.SaveChanges();
+        }
+
+        return Ok("201");
     }
 
     [HttpGet("/api/jobs/bydate/{begindate}/{enddate}")]
     public ActionResult<string> GetJobs(string begindate, string enddate)
     {
+        // using (JobhuntContext db = new JobhuntContext()){
+        //     Job[] result1 = db.Jobs.FromSql<string>("");
+        // }
+
         GetJobInfo[] jobs = new JobInfo().ReturnJobs(begindate, enddate);
 
         string result = JsonSerializer.Serialize(jobs);
@@ -45,13 +77,7 @@ public class JobInfoController : ControllerBase
     }
 
 
-    [HttpPost("/api/job/addjob")]
-    public ActionResult<string> AddJob([FromBody] PostJobInfo Job)
-    {
-        new JobInfo().InsertJob(Job);
 
-        return Ok("201");
-    }
 
     [HttpPost("/api/job/updatedescription")]
     public ActionResult<string> UpdateJobDescription([FromBody] UpdateJobDescription job)
