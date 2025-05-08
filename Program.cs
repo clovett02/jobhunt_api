@@ -37,7 +37,7 @@ var app = builder.Build();
 
 app.UseRouting();
 
-app.UseCors("MyPolicy");
+app.UseCors();
 
 // app.UseAuthorization();
 
