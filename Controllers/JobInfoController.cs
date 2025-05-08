@@ -4,6 +4,8 @@ using System.Text.Json;
 using JobHunt_API.Record;
 using JobHunt_API.models;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+using MySqlX.XDevAPI.Common;
 
 namespace JobHunt_API.Controller;
 
@@ -11,11 +13,11 @@ namespace JobHunt_API.Controller;
 public class JobInfoController : ControllerBase
 {
     [HttpGet("/api/job/byID/{jobID}")]
-    public ActionResult<string> GetJob(int jobID)
+    public async Task<ActionResult<string>> GetJob(int jobID)
     {
         Job result;
         using (JobhuntContext db = new JobhuntContext()){
-            result = db.Jobs.Find(jobID);
+            result = await db.Jobs.FindAsync(jobID);
         }
         // GetJobInfo result = new JobInfo().ReturnJob(jobID);
         return Ok(JsonSerializer.Serialize(result));
@@ -23,22 +25,22 @@ public class JobInfoController : ControllerBase
     }
 
     [HttpDelete("/api/job/byID/{jobid}")]
-    public ActionResult<string> DeleteJob(int jobid)
+    public async Task<ActionResult<string>> DeleteJob(int jobid)
     {
         using(JobhuntContext db = new JobhuntContext()){
-            Job j = db.Jobs.Find(jobid);
+            Job j = await db.Jobs.FindAsync(jobid);
             db.Jobs.Remove(j);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
         return Ok("200");
     }
     
     [HttpPost("/api/job/addjob")]
-    public ActionResult<string> AddJob([FromBody] Job job)
+    public async Task<ActionResult<string>> AddJob([FromBody] Job job)
     {
         using(JobhuntContext db = new JobhuntContext()){
             db.Add(job);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
         return Ok("201");
@@ -60,10 +62,16 @@ public class JobInfoController : ControllerBase
     [HttpGet("/api/jobs/pastyear")]
     public ActionResult<string> GetJobs()
     {
-        GetJobInfo[] jobs = new JobInfo().ReturnJobs();
+        Job[] result;
+        using (JobhuntContext db = new JobhuntContext()){
+            DateTime yearago = DateTime.Now.AddYears(-1);
+            result = db.Jobs.Where(j => j.ApplicationDate > yearago).ToArray();
+        }
 
-        string result = JsonSerializer.Serialize(jobs);
+        // GetJobInfo[] jobs = new JobInfo().ReturnJobs();
 
+        // string result = JsonSerializer.Serialize(jobs);
+        
         return Ok(result);
     }
 
