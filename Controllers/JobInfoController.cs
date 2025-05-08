@@ -1,4 +1,4 @@
-
+using System;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using JobHunt_API.models;
@@ -96,6 +96,7 @@ public class JobInfoController : ControllerBase
     public async Task<ActionResult<string>> UpdateJob([FromBody] string incomingdto)
     {
         JobDTO dto = JsonSerializer.Deserialize<JobDTO>(incomingdto);
+        Console.WriteLine(dto);
         using (JobhuntContext db = new JobhuntContext()){
             db.Jobs.Update(dto.ReturnJobContextJob());
             await db.SaveChangesAsync();
