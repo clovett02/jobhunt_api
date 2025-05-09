@@ -95,6 +95,7 @@ public class JobInfoController : ControllerBase
     [HttpPut("/api/job/update")]
     public async Task<ActionResult<string>> UpdateJob([FromBody] string incomingdto)
     {
+        Console.WriteLine(incomingdto);
         JobDTO dto = JsonSerializer.Deserialize<JobDTO>(incomingdto);
         Console.WriteLine(dto);
         using (JobhuntContext db = new JobhuntContext()){
