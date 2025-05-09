@@ -62,7 +62,7 @@ namespace JobHunt_API.DTOs{
             j.DatePosted = this.DatePosted;
             j.ApplicationDate = this.ApplicationDate;
             j.ApplicationTime = this.ApplicationTime;
-            j.ApplicationDay = this.ApplicationDay;
+            // j.ApplicationDay = this.ApplicationDay;
             j.Responded = this.Responded;
             j.ResponseDate = this.ResponseDate;
             j.ResponseTime = this.ResponseTime;

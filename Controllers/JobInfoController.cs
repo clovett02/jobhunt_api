@@ -15,6 +15,7 @@ public class JobInfoController : ControllerBase
         using (JobhuntContext db = new JobhuntContext()){
             result = new JobDTO(await db.Jobs.FindAsync(jobID));
         }
+        Console.WriteLine(result);
         return Ok(JsonSerializer.Serialize(result));
         
     }
@@ -31,10 +32,8 @@ public class JobInfoController : ControllerBase
     }
     
     [HttpPost("/api/job/addjob")]
-    public async Task<ActionResult<string>> AddJob([FromBody] string incomingdto)
+    public async Task<ActionResult<string>> AddJob([FromBody] Job job)
     {
-        JobDTO dto = JsonSerializer.Deserialize<JobDTO>(incomingdto);
-        Job job = dto.ReturnJobContextJob();
         using(JobhuntContext db = new JobhuntContext()){
             db.Add(job);
             await db.SaveChangesAsync();
@@ -93,13 +92,11 @@ public class JobInfoController : ControllerBase
     }
 
     [HttpPut("/api/job/update")]
-    public async Task<ActionResult<string>> UpdateJob([FromBody] string incomingdto)
+    public async Task<ActionResult<string>> UpdateJob([FromBody] Job job)
     {
-        Console.WriteLine(incomingdto);
-        JobDTO dto = JsonSerializer.Deserialize<JobDTO>(incomingdto);
-        Console.WriteLine(dto);
+        Console.WriteLine(job);
         using (JobhuntContext db = new JobhuntContext()){
-            db.Jobs.Update(dto.ReturnJobContextJob());
+            db.Jobs.Update(job);
             await db.SaveChangesAsync();
         }
 

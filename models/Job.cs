@@ -31,7 +31,7 @@ public partial class Job
 
     public DateTime? ApplicationTime { get; set; }
 
-    public string ApplicationDay { get; set; }
+    // public string ApplicationDay { get; set; }
 
     public bool? Responded { get; set; }
 
